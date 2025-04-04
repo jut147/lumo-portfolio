@@ -118,6 +118,7 @@ function MobileLink({
       onClick={() => {
         router.push(href.toString())
         onOpenChange?.(false)
+
       }}
       className={cn(
         "text-lg transition-colors hover:text-primary", // Increased font size, added hover
