@@ -5,11 +5,16 @@ import { Waves } from "@/components/ui/waves-background"
 import { cn } from "@/lib/utils"
 import { ChevronDown } from "lucide-react" // Import icon
 
-export function WavesHero() {
+interface WavesHeroProps {
+  className?: string; // Add className prop
+}
+
+export function WavesHero({ className }: WavesHeroProps) { // Destructure className
   const { theme } = useTheme()
 
   return (
-    <div className="relative flex h-screen w-full flex-col items-center justify-center overflow-hidden rounded-md bg-background antialiased"> {/* Changed h-[40rem] to h-screen */}
+    // Use cn to merge existing classes with the passed className
+    <div className={cn("relative flex h-screen w-full flex-col items-center justify-center overflow-hidden rounded-md bg-background antialiased", className)}> {/* Changed h-[40rem] to h-screen */}
       {/* Container for Waves */}
       <div className="absolute inset-0 z-0">
          <Waves
