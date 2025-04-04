@@ -57,26 +57,26 @@ import {
            {/* Conditionally render logo based on theme *after mount* */}
            {mounted && theme === 'dark' ? (
              // Wrap Image in a div with rounding and overflow hidden
-             <div className="h-6 w-6 rounded overflow-hidden">
+             <div className="h-7 w-7 rounded overflow-hidden"> {/* Increased size */}
                <Image
                  src="/logo-white-black-bacground.svg" // Dark theme logo
                  alt={`${siteConfig.name} Logo`}
-                 width={24}
-                 height={24}
-                 // className="h-6" // Class moved to wrapper
+                 width={28} // Increased size
+                 height={28} // Increased size
+                 // className="h-7" // Class moved to wrapper
                  priority // Prioritize loading the visible logo
                />
              </div>
            ) : (
              // Render light theme logo by default (server & initial client) or if theme is light
              // Wrap Image in a div with rounding and overflow hidden
-             <div className="h-6 w-6 rounded overflow-hidden">
+             <div className="h-7 w-7 rounded overflow-hidden"> {/* Increased size */}
                <Image
                  src="/logo-black-trans-bacground.svg" // Light theme logo (default)
                  alt={`${siteConfig.name} Logo`}
-                 width={24}
-                 height={24}
-                 // className="h-6" // Class moved to wrapper
+                 width={28} // Increased size
+                 height={28} // Increased size
+                 // className="h-7" // Class moved to wrapper
                  priority // Prioritize loading the visible logo
                />
              </div>

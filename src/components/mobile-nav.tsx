@@ -10,8 +10,8 @@ import { Menu } from "lucide-react"
 import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area" // Assuming ScrollArea is available or will be added
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet" // Added SheetTitle
 
 export function MobileNav() {
   const [open, setOpen] = React.useState(false)
@@ -29,16 +29,17 @@ export function MobileNav() {
       <SheetTrigger asChild>
         <Button
           variant="ghost"
-          className="px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden" // Only show on mobile
-        >
-          <Menu className="h-6 w-6" />
-          <span className="sr-only">Toggle Menu</span>
-        </Button>
-      </SheetTrigger>
-      <SheetContent side="right" className="p-6 pt-8"> {/* Added padding */}
-        {/* Header Section */}
-        <div className="mb-4 flex items-center border-b pb-4"> {/* Added border and spacing */}
-          <MobileLink
+           className="px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden" // Only show on mobile
+         >
+           <Menu className="h-8 w-8" /> {/* Increased size further for visual balance */}
+           <span className="sr-only">Toggle Menu</span>
+         </Button>
+       </SheetTrigger>
+       <SheetContent side="right" className="p-6 pt-8"> {/* Added padding */}
+         <SheetTitle className="sr-only">Navigation Menu</SheetTitle> {/* Added visually hidden title */}
+         {/* Header Section */}
+         <div className="mb-4 flex items-center border-b pb-4"> {/* Added border and spacing */}
+           <MobileLink
             href="/"
             className="flex items-center gap-2" // Added gap
             onOpenChange={setOpen}

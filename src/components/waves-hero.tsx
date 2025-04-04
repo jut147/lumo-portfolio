@@ -33,28 +33,32 @@ export function WavesHero({ className }: WavesHeroProps) { // Destructure classN
       </div>
 
       {/* Content Overlay */}
-      <div className="relative z-10 text-center"> {/* Removed p-4 */}
-        <h1 className="bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text py-4 text-4xl font-medium tracking-tight text-transparent md:text-7xl">
-          Lumo Studios
-        </h1>
-        <p className="mt-4 text-lg text-neutral-500 dark:text-neutral-300">
-          Design | Web Development | Action VFX
-        </p>
-        {/* Add Call to Action Button later if needed */}
-      </div>
-      {/* Scroll Down Icon */}
-      <button
-        onClick={() => {
+      <div className="relative z-10 flex flex-col items-center text-center"> {/* Added flex, flex-col, items-center */}
+        {/* Text Content Wrapper */}
+        <div>
+          <h1 className="bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text py-4 text-4xl font-medium tracking-tight text-transparent md:text-7xl">
+            Lumo Studios
+          </h1>
+          <p className="mt-4 text-lg text-neutral-500 dark:text-neutral-300">
+            Design | Web Development | Action VFX
+          </p>
+          {/* Add Call to Action Button later if needed */}
+        </div>
+
+        {/* Scroll Down Icon - Positioned below text, mobile only */}
+        <button
+          onClick={() => {
           const projectsSection = document.getElementById("projects-section");
           if (projectsSection) {
             projectsSection.scrollIntoView({ behavior: "smooth", block: "start" });
           }
         }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 cursor-pointer text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors duration-300 animate-bounce" // Adjusted colors and added bounce animation
+        className="mt-12 block md:hidden cursor-pointer text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors duration-300" // Removed absolute positioning, bounce; Added mt-12, block, md:hidden
         aria-label="Scroll down to projects"
       >
-        <ChevronDown className="h-10 w-10 stroke-width-[1.5]" /> {/* Increased size and slightly thicker stroke */}
+        <ChevronDown className="h-10 w-10 stroke-width-[1.5]" />
       </button>
-    </div>
+    </div> {/* Closes Content Overlay div */}
+  </div> // Added missing closing tag for main component div
   )
 }
