@@ -115,10 +115,39 @@ function MobileLink({
   return (
     <Link
       href={href}
-      onClick={() => {
-        router.push(href.toString())
-        onOpenChange?.(false)
+      onClick={(e) => { // Add event parameter 'e'
+        const hrefString = href.toString();
+        // Removed duplicate line: const hrefString = href.toString();
+        const isHomePageAnchor = hrefString.startsWith("/#");
 
+        if (isHomePageAnchor) {
+          e.preventDefault(); // Prevent default link navigation
+          const targetId = hrefString.substring(2); // Get the ID after '/#'
+
+          // If already on homepage, scroll immediately
+          if (pathname === "/") {
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+              targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+            onOpenChange?.(false); // Close the sheet
+          } else {
+            // If not on homepage, navigate first, then scroll after delay
+            router.push("/"); // Navigate to home
+            // Wait for navigation and rendering before scrolling
+            setTimeout(() => {
+              const targetElement = document.getElementById(targetId);
+              if (targetElement) {
+                targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
+              }
+            }, 100); // Adjust delay if needed
+            onOpenChange?.(false); // Close the sheet
+          }
+        } else {
+          // Default behavior for non-anchor links
+          router.push(hrefString);
+          onOpenChange?.(false);
+        }
       }}
       className={cn(
         "text-lg transition-colors hover:text-primary", // Increased font size, added hover

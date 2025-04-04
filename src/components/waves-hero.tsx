@@ -3,7 +3,7 @@
 import { useTheme } from "next-themes"
 import { Waves } from "@/components/ui/waves-background"
 import { cn } from "@/lib/utils"
-import { ChevronDown } from "lucide-react" // Import icon
+import { ChevronDown } from "lucide-react" // Import only ChevronDown
 
 interface WavesHeroProps {
   className?: string; // Add className prop
@@ -44,21 +44,36 @@ export function WavesHero({ className }: WavesHeroProps) { // Destructure classN
           </p>
           {/* Add Call to Action Button later if needed */}
         </div>
+        {/* Removed incorrect mobile button from inside content overlay */}
+    </div> {/* Closes Content Overlay div */}
 
-        {/* Scroll Down Icon - Positioned below text, mobile only */}
-        <button
-          onClick={() => {
+    {/* Scroll Down Icon (Mobile) - Correctly positioned outside */}
+    <button
+        onClick={() => {
           const projectsSection = document.getElementById("projects-section");
           if (projectsSection) {
             projectsSection.scrollIntoView({ behavior: "smooth", block: "start" });
           }
         }}
-        className="mt-12 block md:hidden cursor-pointer text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors duration-300" // Removed absolute positioning, bounce; Added mt-12, block, md:hidden
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 block md:hidden cursor-pointer text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors duration-300 animate-bounce" // Mobile: Absolute, bounce
         aria-label="Scroll down to projects"
       >
-        <ChevronDown className="h-10 w-10 stroke-width-[1.5]" />
+        <ChevronDown className="h-10 w-10 stroke-width-[1.5]" /> {/* Use ChevronDown */}
       </button>
-    </div> {/* Closes Content Overlay div */}
-  </div> // Added missing closing tag for main component div
-  )
+
+    {/* Scroll Down Icon (Desktop) */}
+    <button
+        onClick={() => {
+          const projectsSection = document.getElementById("projects-section");
+          if (projectsSection) {
+            projectsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden md:block cursor-pointer text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors duration-300 animate-bounce" // Desktop: Absolute, bounce
+        aria-label="Scroll down to projects"
+      >
+        <ChevronDown className="h-10 w-10 stroke-width-[1.5]" /> {/* Kept ChevronDown */}
+      </button>
+  </div> // Closes main component div
+  );
 }

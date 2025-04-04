@@ -10,6 +10,10 @@ export const siteConfig = {
       href: "/",
     },
     {
+      title: "Projects",
+      href: "/#projects-section", // Link to homepage anchor
+    },
+    {
       title: "About",
       href: "/about",
     },
