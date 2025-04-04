@@ -44,24 +44,23 @@ export function WavesHero({ className }: WavesHeroProps) { // Destructure classN
           </p>
           {/* Add Call to Action Button later if needed */}
         </div>
-        {/* Removed incorrect mobile button from inside content overlay */}
-    </div> {/* Closes Content Overlay div */}
 
-    {/* Scroll Down Icon (Mobile) - Correctly positioned outside */}
-    <button
-        onClick={() => {
+        {/* Scroll Down Icon (Mobile) - Moved INSIDE content overlay, below text */}
+        <button
+          onClick={() => {
           const projectsSection = document.getElementById("projects-section");
           if (projectsSection) {
             projectsSection.scrollIntoView({ behavior: "smooth", block: "start" });
           }
         }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 block md:hidden cursor-pointer text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors duration-300 animate-bounce" // Mobile: Absolute, bounce
+        className="mt-12 block md:hidden cursor-pointer text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors duration-300 animate-bounce" // Mobile: Relative position below text, bounce
         aria-label="Scroll down to projects"
       >
         <ChevronDown className="h-10 w-10 stroke-width-[1.5]" /> {/* Use ChevronDown */}
       </button>
+    </div> {/* Closes Content Overlay div */}
 
-    {/* Scroll Down Icon (Desktop) */}
+    {/* Scroll Down Icon (Desktop) - Remains outside, absolutely positioned */}
     <button
         onClick={() => {
           const projectsSection = document.getElementById("projects-section");
