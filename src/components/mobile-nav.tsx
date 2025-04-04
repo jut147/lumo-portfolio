@@ -31,7 +31,7 @@ export function MobileNav() {
           variant="ghost"
            className="px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden" // Only show on mobile
          >
-           <Menu className="h-8 w-8" /> {/* Increased size further for visual balance */}
+           <Menu className="h-10 w-10" /> {/* Increased size */}
            <span className="sr-only">Toggle Menu</span>
          </Button>
        </SheetTrigger>
