@@ -1,6 +1,7 @@
-import { Button } from "@/components/ui/button" // Corrected import path
-import React from "react"; // Added React import
+import { Button } from "@/components/ui/button"
+import React from "react";
 import Link from "next/link";
+import { ThemeToggle } from "@/components/ui/theme-toggle"; // Import ThemeToggle
 
 interface FooterProps {
   logo: React.ReactNode
@@ -45,9 +46,11 @@ export function Footer({
             {logo}
             <span className="font-bold text-xl">{brandName}</span>
           </Link>
-          <ul className="flex list-none mt-6 md:mt-0 space-x-3">
-            {socialLinks.map((link, i) => (
-              <li key={i}>
+          {/* Container for social links and mobile theme toggle */}
+          <div className="flex items-center mt-6 md:mt-0 space-x-3">
+            <ul className="flex list-none space-x-3">
+              {socialLinks.map((link, i) => (
+                <li key={i}>
                 <Button
                   variant="secondary"
                   size="icon"
@@ -58,9 +61,14 @@ export function Footer({
                     {link.icon}
                   </a>
                 </Button>
-              </li>
-            ))}
-          </ul>
+                </li>
+              ))}
+            </ul>
+            {/* Mobile Theme Toggle - Hidden on md and larger screens */}
+            <div className="md:hidden">
+              <ThemeToggle />
+            </div>
+          </div>
         </div>
         <div className="border-t mt-6 pt-6 md:mt-4 md:pt-8 lg:grid lg:grid-cols-10">
           <nav className="lg:mt-0 lg:col-[4/11]">

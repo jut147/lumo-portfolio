@@ -18,6 +18,7 @@ import {
  } from "@/components/ui/navigation-menu"
  // import { Icons } from "@/components/icons" // Optional: for logo
  import { ThemeToggle } from "@/components/ui/theme-toggle" // Import ThemeToggle
+ import { MobileNav } from "@/components/mobile-nav" // Import MobileNav
 
  export function Header() {
   const pathname = usePathname();
@@ -87,7 +88,7 @@ import {
          </Link>
 
         {/* Main Navigation */}
-        <NavigationMenu className="hidden sm:flex">
+        <NavigationMenu className="hidden md:flex"> {/* Changed sm:flex to md:flex */}
           <NavigationMenuList>
             {siteConfig.mainNav?.map(
               (item: { href?: string; title: string }) => // Add type for item
@@ -109,7 +110,10 @@ import {
 
          {/* Right side items (Theme toggle, etc.) */}
          <div className="flex flex-1 items-center justify-end space-x-4">
-            <ThemeToggle /> {/* Add ThemeToggle */}
+           <div className="hidden md:flex"> {/* Wrapper to hide ThemeToggle on mobile */}
+             <ThemeToggle />
+           </div>
+           <MobileNav /> {/* Add MobileNav */}
          </div>
        </div>
     </header>

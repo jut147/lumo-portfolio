@@ -27,7 +27,8 @@ const securityHeaders = [
     value: [
       `default-src 'self'`,
       // Allow inline scripts/styles & eval for Next.js/React (consider tightening in production)
-      `script-src 'self' 'unsafe-eval' 'unsafe-inline'`,
+      // Added va.vercel-scripts.com for Vercel Analytics/Speed Insights
+      `script-src 'self' 'unsafe-eval' 'unsafe-inline' va.vercel-scripts.com`,
       `style-src 'self' 'unsafe-inline'`,
       // Allow images from self, data URIs, placeholder, and Supabase
       `img-src 'self' data: https://via.placeholder.com https://igyrkokjtrhsnrivmotx.supabase.co`,

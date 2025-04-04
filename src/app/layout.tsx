@@ -29,6 +29,23 @@ const archivoBlack = Archivo_Black({
 export const metadata: Metadata = {
   title: "Lumo Studios | Your Web Design Partner", // Updated title
   description: "Lumo Studios | Your Web Design Partner", // Using config description
+  openGraph: {
+    images: [
+      {
+        url: "https://lumo-kappa.vercel.app/logo-white-black-bacground.svg", // Must be an absolute URL
+        width: 800, // Optional: Specify image width
+        height: 600, // Optional: Specify image height
+        alt: "Lumo Studios Logo", // Optional: Alt text for the image
+      },
+    ],
+    type: 'website', // Optional: Specify content type
+  },
+  twitter: { // Optional: Add Twitter card metadata
+    card: 'summary_large_image',
+    title: "Lumo Studios | Your Web Design Partner",
+    description: "Lumo Studios | Your Web Design Partner",
+    images: ['https://lumo-kappa.vercel.app/logo-white-black-bacground.svg'], // Must be an absolute URL
+  },
 };
 
 export default function RootLayout({
