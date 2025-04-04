@@ -344,12 +344,12 @@ export function Waves({
     requestAnimationFrame(tick)
     window.addEventListener("resize", onResize)
     window.addEventListener("mousemove", onMouseMove)
-    window.addEventListener("touchmove", onTouchMove, { passive: false })
+    container.addEventListener("touchmove", onTouchMove, { passive: false }) // Attach to container, not window
 
     return () => {
       window.removeEventListener("resize", onResize)
       window.removeEventListener("mousemove", onMouseMove)
-      window.removeEventListener("touchmove", onTouchMove)
+      container.removeEventListener("touchmove", onTouchMove) // Remove from container, not window
     }
   }, [
     lineColor,
