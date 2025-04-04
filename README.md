@@ -17,6 +17,7 @@ This repository contains the source code for my personal portfolio website, buil
 *   **Backend/DB (Optional):** [Supabase](https://supabase.io/) (Used for contact form or other features)
 *   **Testing:** [Playwright](https://playwright.dev/) (E2E), [Jest](https://jestjs.io/) (Unit/Integration - *as per project goals*)
 *   **Linting:** [ESLint](https://eslint.org/)
+*   **Deployment/Analytics:** [Vercel](https://vercel.com/)
 
 ## Features
 
