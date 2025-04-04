@@ -1,6 +1,13 @@
 import { useRef, useEffect } from "react"
 import { cn } from "@/lib/utils" // Corrected import path
 
+interface Point {
+  x: number;
+  y: number;
+  wave: { x: number; y: number };
+  cursor: { x: number; y: number; vx: number; vy: number };
+}
+
 interface WavesProps {
   /**
    * Color of the wave lines
@@ -91,7 +98,7 @@ class Noise {
     seed = Math.floor(seed)
     if (seed < 256) seed |= seed << 8
     for (let i = 0; i < 256; i++) {
-      let v = i & 1 ? this.p[i] ^ (seed & 255) : this.p[i] ^ ((seed >> 8) & 255)
+      const v = i & 1 ? this.p[i] ^ (seed & 255) : this.p[i] ^ ((seed >> 8) & 255)
       this.perm[i] = this.perm[i + 256] = v
       this.gradP[i] = this.gradP[i + 256] = this.grad3[v % 12]
     }
@@ -141,7 +148,7 @@ export function Waves({
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null)
   const boundingRef = useRef({ width: 0, height: 0, left: 0, top: 0 })
   const noiseRef = useRef(new Noise(Math.random()))
-  const linesRef = useRef<any[]>([])
+  const linesRef = useRef<Point[][]>([])
   const mouseRef = useRef({
     x: -10,
     y: 0,
@@ -213,8 +220,8 @@ export function Waves({
       const lines = linesRef.current
       const mouse = mouseRef.current
       const noise = noiseRef.current
-      lines.forEach((pts) => {
-        pts.forEach((p: any) => {
+      lines.forEach((pts: Point[]) => {
+        pts.forEach((p: Point) => {
           const move =
             noise.perlin2(
               (p.x + time * waveSpeedX) * 0.002,
@@ -253,7 +260,7 @@ export function Waves({
       })
     }
 
-    function moved(point: any, withCursor = true) {
+    function moved(point: Point, withCursor = true) {
       const x = point.x + point.wave.x + (withCursor ? point.cursor.x : 0)
       const y = point.y + point.wave.y + (withCursor ? point.cursor.y : 0)
       return { x: Math.round(x), y: Math.round(y) }

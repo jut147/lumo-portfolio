@@ -5,7 +5,7 @@ import { useTheme } from "next-themes" // Import useTheme
 import { Moon, Sun } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-interface ThemeToggleProps extends React.HTMLAttributes<HTMLDivElement> {} // Extend HTMLDivElement attributes
+type ThemeToggleProps = React.HTMLAttributes<HTMLDivElement>; // Use type alias instead of empty interface
 
 export function ThemeToggle({ className, ...props }: ThemeToggleProps) {
   const { resolvedTheme, setTheme } = useTheme() // Use the hook

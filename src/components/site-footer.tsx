@@ -2,7 +2,7 @@
 
 import * as React from "react"; // Import React
 import { useState, useEffect } from "react"; // Import hooks
-import { Github, Twitter } from "lucide-react"
+import { Github } from "lucide-react"
 import Image from "next/image" // Import Next Image
 import { useTheme } from "next-themes" // Import useTheme
 import { Footer } from "@/components/ui/footer"

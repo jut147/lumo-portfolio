@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button" // Corrected import path
 import React from "react"; // Added React import
+import Link from "next/link";
 
 interface FooterProps {
   logo: React.ReactNode
@@ -36,14 +37,14 @@ export function Footer({
     <footer className="pb-6 pt-24 lg:pb-8 lg:pt-32"> {/* Increased pt */}
       <div className="px-4 lg:px-8 max-w-screen-2xl mx-auto">
         <div className="md:flex md:items-start md:justify-between">
-          <a
+          <Link
             href="/"
             className="flex items-center gap-x-2"
             aria-label={brandName}
           >
             {logo}
             <span className="font-bold text-xl">{brandName}</span>
-          </a>
+          </Link>
           <ul className="flex list-none mt-6 md:mt-0 space-x-3">
             {socialLinks.map((link, i) => (
               <li key={i}>

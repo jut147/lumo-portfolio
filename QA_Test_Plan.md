@@ -1,6 +1,6 @@
-# Portfolio Website - QA Test Plan & Strategy
+do a # Portfolio Website - QA Test Plan & Strategy
 
-**Version:** 1.4
+**Version:** 1.5
 **Date:** 2025-04-04
 
 ## 1. Introduction
@@ -21,24 +21,37 @@ Based on the project structure, the application is a Next.js/React-based portfol
 
 ## 3. Testing Strategy
 
-A multi-faceted testing strategy will be employed to ensure comprehensive coverage:
+A multi-faceted testing strategy will be employed to ensure comprehensive coverage, incorporating different levels of the testing pyramid:
 
 ```mermaid
 mindmap
   root((Testing Strategy))
-    Functional Testing
+    Static Analysis & Build
+      ::icon(fa fa-cogs)
+      Linting (ESLint)
+      Type Checking (TypeScript)
+      Build Verification (`npm run build`)
+    Unit & Component Testing
+      ::icon(fa fa-puzzle-piece)
+      Isolated Functions (Utils)
+      Individual Components (UI Elements)
+    Integration Testing
+      ::icon(fa fa-link)
+      Component Interactions
+      Frontend <> Backend (Supabase)
+    End-to-End (E2E) Testing
+      ::icon(fa fa-play-circle)
+      User Journeys (Playwright)
+      Critical Paths
+    Functional Testing (Manual/Exploratory)
       ::icon(fa fa-check-circle)
       Positive Cases
       Negative Cases
       Feature Verification
-    Integration Testing
-      ::icon(fa fa-link)
-      Frontend <> Backend (Supabase)
-      Component Interactions
     Regression Testing
       ::icon(fa fa-undo)
       Post-Change Validation
-      Automation Focus (E2E)
+      Automation Focus (E2E, Unit/Component)
     Usability Testing
       ::icon(fa fa-users)
       Ease of Use
@@ -70,9 +83,17 @@ mindmap
       Manual Checks (Keyboard, Screen Reader)
 ```
 
-*   **Functional Testing:** Verify that each feature works according to requirements (e.g., navigation links, form submissions, theme changes). Both positive and negative test cases will be included.
-*   **Integration Testing:** Focus on the interaction between the frontend components and any backend services, specifically the Supabase client integration (e.g., successful contact form data submission and handling).
-*   **Regression Testing:** Execute a subset of tests after code changes or bug fixes to ensure existing functionality remains unaffected. Automated tests (E2E) are crucial here.
+*   **Static Analysis & Build Verification:** Before other testing, ensure the code adheres to quality standards and the application builds successfully. This includes:
+    *   Running the linter (ESLint) to catch code style and potential errors.
+    *   Running the TypeScript compiler (`tsc`) to check for type errors.
+    *   Executing the production build command (`npm run build`) to confirm it completes without errors (including linting and type checking steps integrated into the build). **This is a critical pre-deployment check.**
+*   **Unit & Component Testing:** Test individual functions (e.g., utility functions in `src/lib/utils.ts`) and React components in isolation to verify their logic and rendering without needing to run the entire application. Tools like Jest and React Testing Library are suitable.
+*   **Integration Testing:** Focus on the interaction between different parts of the application, such as:
+    *   Interactions between multiple components (e.g., form submission triggering a toast notification).
+    *   Frontend communication with backend services (e.g., Supabase client integration for the contact form).
+*   **End-to-End (E2E) Testing:** Simulate real user scenarios by interacting with the application through the browser. Verify complete user flows (e.g., navigating to the contact page, filling the form, submitting, and seeing a success message). Playwright is recommended.
+*   **Functional Testing:** Manually or exploratorily verify that each feature works according to requirements (e.g., navigation links work, theme changes apply correctly). Both positive and negative test cases will be included.
+*   **Regression Testing:** Execute a subset of automated tests (E2E, Integration, Unit/Component) after code changes or bug fixes to ensure existing functionality remains unaffected.
 *   **Usability Testing:** Evaluate the ease of use, intuitiveness, and overall user experience of the website. This can involve heuristic evaluation or user feedback sessions.
 *   **Compatibility Testing:** Ensure the website renders and functions correctly across different browsers, operating systems, and device types (responsive design).
     *   **Target Browsers:** Latest versions of Chrome, Firefox, Safari, Edge.
@@ -121,6 +142,7 @@ mindmap
 
 ### 4.1 In-Scope Features
 
+*   **Build & Static Checks:** Successful execution of `npm run build` (including linting and type checks).
 *   **Navigation:**
     *   Header navigation links (Home, About, Contact).
     *   Footer navigation links (if any).
@@ -146,12 +168,14 @@ mindmap
     *   Waves background rendering and behavior.
     *   Logo display.
     *   General UI consistency.
+*   **(Optional) Unit/Component Tests:** Execution and passing of existing unit/component tests.
 
 ### 4.2 Out-of-Scope Features (Assumed)
 
 *   Admin panel or CMS functionality (unless present).
 *   User authentication (unless implemented beyond contact form).
 *   Direct database manipulation testing (focus on API/client interaction).
+*   Writing *new* extensive unit/component tests (focus is on executing existing ones if present).
 
 ### 4.3 Edge Cases & Boundary Conditions
 
@@ -163,14 +187,16 @@ mindmap
 
 ## 5. Testing Environments
 
-*   **Local Development:** Developers' machines for initial testing during development. (`npm run dev`)
-*   **Staging/Pre-production:** A dedicated environment mirroring production as closely as possible. Used for comprehensive QA cycles, UAT, and regression testing before deployment. (Requires deployment setup, e.g., Vercel preview deployments).
+*   **Local Development:** Developers' machines for initial testing during development. (`npm run dev`, `npm run build`)
+*   **Staging/Pre-production:** A dedicated environment mirroring production as closely as possible. Used for comprehensive QA cycles, UAT, and regression testing before deployment. (Requires deployment setup, e.g., Vercel preview deployments). Build verification (`npm run build`) should occur before promoting to/testing on staging.
 *   **Production:** Limited smoke testing after deployment to ensure core functionality is operational.
 
 ## 6. Recommended Tools
 
 *   **Test Management:** (Optional, for larger scale) Zephyr Scale, TestRail, or simpler Markdown checklists/spreadsheets.
-*   **Functional/E2E/Regression Testing:**
+*   **Static Analysis & Build:** ESLint, TypeScript Compiler (`tsc`), `npm run build` command.
+*   **Unit/Component Testing:** Jest, React Testing Library (RTL).
+*   **Integration/E2E/Regression Testing:**
     *   **Playwright** (Recommended): Modern, fast, reliable cross-browser automation. Runs via CLI.
     *   **Cypress:** Popular alternative, good developer experience. Runs via CLI.
 *   **Performance Testing:**
@@ -195,7 +221,7 @@ mindmap
 
 *   **Test Execution:**
     *   Total tests executed.
-    *   Pass/Fail rate (overall and per feature/module).
+    *   Pass/Fail rate (overall and per feature/module, including build/lint status).
     *   Number of bugs found (categorized by severity: Critical, High, Medium, Low).
     *   Test coverage (percentage of requirements/features tested).
 *   **Performance:**
@@ -221,6 +247,8 @@ mindmap
 
 These are initial targets. Some may be refined after baseline testing and analysis.
 
+*   **Build & Static Analysis:**
+    *   `npm run build`: Must complete successfully with zero errors (including linting/type checks).
 *   **Performance:**
     *   **Core Web Vitals (Target: Good rating on key pages):**
         *   Largest Contentful Paint (LCP): < 2.5 seconds.
@@ -263,11 +291,13 @@ These are initial targets. Some may be refined after baseline testing and analys
 *   **Risk:** Inconsistent testing across different environments.
     *   **Mitigation:** Ensure staging environment closely mirrors production; automate environment setup where possible. Document environment configurations.
 *   **Risk:** Regression bugs introduced by new features/fixes.
-    *   **Mitigation:** Implement a robust automated regression suite (Playwright/Cypress) run frequently (e.g., on every commit/PR to staging). Maintain and update the suite regularly.
+    *   **Mitigation:** Implement a robust automated regression suite (Playwright/Cypress, potentially unit/integration tests) run frequently (e.g., on every commit/PR to staging). Maintain and update the suite regularly.
 *   **Risk:** Performance bottlenecks under load or due to large bundles/assets.
     *   **Mitigation:** Conduct load testing early if significant dynamic functionality exists; optimize frontend assets (images, JS bundles) and backend queries (if applicable). Monitor Core Web Vitals and bundle sizes against benchmarks.
 *   **Risk:** Security vulnerabilities missed by automated scans.
     *   **Mitigation:** Combine automated scanning (ZAP, npm audit) with manual checks (input validation, secrets exposure, header review) and secure coding practices awareness.
+*   **Risk:** Build/Lint errors missed before QA/deployment.
+    *   **Mitigation:** Integrate `npm run build` check into CI pipeline and/or make it an explicit first step in the QA process for staging/pre-production environments.
 
 ## 11. Sign-off
 
