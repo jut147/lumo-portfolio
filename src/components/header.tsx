@@ -1,4 +1,4 @@
-few"use client"
+"use client"
 
 import * as React from "react"
 import { useState, useEffect } from "react"; // Import useState and useEffect
