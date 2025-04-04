@@ -14,7 +14,7 @@ export function WavesHero({ className }: WavesHeroProps) { // Destructure classN
 
   return (
     // Use cn to merge existing classes with the passed className
-    <div className={cn("relative flex min-h-screen max-md:h-auto w-full flex-col items-center justify-center overflow-hidden rounded-md bg-background antialiased", className)}> {/* Use min-h-screen and override for mobile */}
+    <div className={cn("relative flex min-h-screen max-md:h-auto w-full flex-col items-center justify-center rounded-md bg-background antialiased", className)}> {/* Removed overflow-hidden */}
       {/* Container for Waves */}
       <div className="absolute inset-0 z-0">
          <Waves
