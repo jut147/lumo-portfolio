@@ -19,7 +19,6 @@ export const siteConfig = {
     },
   ],
   links: {
-    // Add social links later if needed
-    // github: "https://github.com/yourusername",
+    github: "https://github.com/jut147",
   },
 }

@@ -57,11 +57,11 @@ export function SiteFooter() {
     { href: "/terms", label: "Terms" },
   ];
 
-  // Placeholder social links
+  // Social links using siteConfig
   const socialLinks = [
     {
       icon: <Github className="h-5 w-5" />,
-      href: "#", // Replace with actual GitHub link
+      href: siteConfig.links.github, // Use link from config
       label: "GitHub",
     },
   ];

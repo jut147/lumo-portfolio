@@ -2,6 +2,8 @@
 
 This repository contains the source code for my personal portfolio website, built to showcase my projects, skills, and experience.
 
+**Creator:** [JT (jut147)](https://github.com/jut147)
+
 <!-- Optional: Add a link to the live demo once available -->
 <!-- [Live Demo](https://your-portfolio-url.com) -->
 
