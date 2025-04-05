@@ -12,23 +12,28 @@ This repository contains the source code for my personal portfolio website, buil
 
 ## Tech Stack
 
-*   **Framework:** [Next.js](https://nextjs.org/) (App Router)
+*   **Framework:** [Next.js](https://nextjs.org/) 15 (App Router)
+*   **UI Library:** [React](https://react.dev/) 19
 *   **Language:** [TypeScript](https://www.typescriptlang.org/)
-*   **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+*   **Styling:** [Tailwind CSS](https://tailwindcss.com/) v4
 *   **UI Components:** [Shadcn/ui](https://ui.shadcn.com/)
-*   **Backend/DB (Optional):** [Supabase](https://supabase.io/) (Used for contact form or other features)
-*   **Testing:** [Playwright](https://playwright.dev/) (E2E), [Jest](https://jestjs.io/) (Unit/Integration - *as per project goals*)
-*   **Linting:** [ESLint](https://eslint.org/)
+*   **Animation:** [Framer Motion](https://www.framer.com/motion/)
+*   **Theming:** [next-themes](https://github.com/pacocoursey/next-themes)
+*   **Backend/DB:** [Supabase](https://supabase.io/) (Project data, Contact form via Server Action)
+*   **Testing:** [Playwright](https://playwright.dev/) (E2E)
+*   **Linting/Formatting:** [ESLint](https://eslint.org/), [Prettier](https://prettier.io/)
 *   **Deployment/Analytics:** [Vercel](https://vercel.com/)
 
 ## Features
 
-*   Responsive design
-*   Homepage showcasing projects
-*   About Me section
-*   Contact Form (potentially using Supabase)
-*   Project detail display (`/projects/[slug]` - *assuming*)
-*   Light/Dark mode theme toggle
+*   Responsive design using Tailwind CSS.
+*   Homepage (`/`) with hero section and project overview.
+*   About Page (`/about`) with sections for bio, skills, experience (placeholder content).
+*   Projects List Page (`/projects`) displaying project cards fetched from Supabase.
+*   Dynamic Project Detail Pages (`/projects/[slug]`) fetching and rendering individual project data (including text/image content sections) from Supabase.
+*   Contact Page (`/contact`) with a form using `react-hook-form`, `zod` for validation, and a Next.js Server Action for submission handling.
+*   Light/Dark mode theme toggle using `next-themes`.
+*   Placeholder Privacy Policy (`/privacy`) and Terms of Service (`/terms`) pages.
 
 ## Getting Started
 
@@ -57,7 +62,7 @@ Follow these instructions to get a local copy up and running for development and
 
 ### Environment Variables
 
-This project uses Supabase for certain features. You'll need to set up your environment variables.
+This project uses Supabase for fetching project data and potentially handling the contact form submission via a Server Action. You'll need to set up your environment variables.
 
 1.  Create a `.env.local` file in the root directory by copying the example file:
     ```bash

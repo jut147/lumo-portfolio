@@ -1,9 +1,6 @@
-"use client"; // Add directive back
-
 "use client"; // Ensure client directive is present
 
 import Image from "next/image";
-// Remove unused Link import
 import { useRouter } from 'next/navigation'; // Import useRouter
 import { motion } from "framer-motion"; // Add motion import back
 import {
@@ -14,11 +11,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"; // Auto-imported by shadcn add
-// import { Button } from "@/components/ui/button"; // Remove unused import
 import { RainbowButton } from "@/components/ui/rainbow-button"; // Import RainbowButton
 import { Badge } from "@/components/ui/badge"; // Import Badge
 import { Project } from "@/types/project";
-// Remove unused ExternalLink import
 
 interface ProjectCardProps {
   project: Project;
@@ -81,14 +76,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
           >
             View Details
           </RainbowButton>
-          {/* Optionally keep external link if needed, maybe as a separate icon button */}
-          {/* {project.project_link && (
-          <Button asChild variant="ghost" size="icon" className="ml-2">
-            <Link href={project.project_link} target="_blank" rel="noopener noreferrer">
-              <ExternalLink className="h-4 w-4" />
-            </Link>
-          </Button>
-        )} */}
+          {/* Removed commented-out external link button */}
       </CardFooter>
       </Card> {/* Close the original Card */}
     </motion.div> // Close the wrapping motion.div

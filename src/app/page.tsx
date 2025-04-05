@@ -1,48 +1,14 @@
-// Remove direct imports of client components
-// import { WavesHero } from "@/components/waves-hero";
-// import { ProjectCard } from "@/components/project-card";
-import { supabase } from "@/lib/supabaseClient";
-import { Project } from "@/types/project";
-import { HomePageClient } from "@/components/home-page-client"; // Import the new client component
+// Removed direct imports of client components
+// Removed supabase import as it's now used in lib/data.ts
+import { Project } from "@/types/project"; // Keep Project type if needed, though likely inferred
+import { HomePageClient } from "@/components/home-page-client"; // Import the client component
+import { getProjects } from "@/lib/data"; // Import the data fetching function
 
-// Function to fetch projects (can be defined here or in lib/data.ts)
-async function getProjects(): Promise<Project[]> {
-  const { data, error } = await supabase
-    .from('projectclayton')
-    .select('*')
-    .order('created_at', { ascending: false }); // Example ordering
-
-  if (error) {
-    console.error("Error fetching projects:", error);
-    // Handle error appropriately - maybe return empty array or throw
-    return [];
-  }
-  // Basic type assertion (consider more robust validation if needed)
-  // Basic type assertion (consider more robust validation if needed)
-  return data as Project[];
-}
-
-// Function to fetch a single project by slug (can be defined here or in lib/data.ts)
-// Remove unused function getProjectBySlug
-/*
-async function getProjectBySlug(slug: string): Promise<Project | null> {
-  const { data, error } = await supabase
-    .from('projectclayton')
-    .select('*')
-    .eq('slug', slug) // Filter by slug
-    .single(); // Expect only one result
-
-  if (error) {
-    console.error(`Error fetching project with slug ${slug}:`, error);
-    // Return null if not found or error occurs
-    return null;
-  }
-  return data as Project;
-}
-*/
+// Removed internal getProjects function
+// Removed commented-out getProjectBySlug function
 
 export default async function HomePage() { // Make the component async
-  const projects = await getProjects(); // Fetch data
+  const projects = await getProjects(); // Fetch data using the imported function
 
   return (
     // Render the client component and pass the fetched projects data

@@ -9,7 +9,7 @@ Create a modern, high-class portfolio website showcasing projects dynamically fe
 *   React
 *   TypeScript
 *   Tailwind CSS
-*   shadcn/ui
+*   shadcn
 *   Supabase (for data)
 *   Framer Motion (for animations)
 *   Lucide React (for icons)
@@ -17,6 +17,7 @@ Create a modern, high-class portfolio website showcasing projects dynamically fe
 
 **Core Features:**
 *   Homepage with interactive Waves hero section and dynamic project grid.
+*   Dynamic Project Detail Pages (using slugs).
 *   About page.
 *   Contact page.
 *   Integration of modern UI components (Spotlight, FloatingNav, etc. - starting with Waves).
@@ -45,11 +46,11 @@ This phase establishes the foundational structure and installs core dependencies
         ```
     *   *(Self-Correction: The user prompt didn't specify `--src-dir`, but it's common practice and aligns well with shadcn. Will assume its use unless told otherwise. Also assuming `npm`.)*
 
-2.  **Initialize shadcn/ui:**
-    *   Run the `shadcn-ui init` command to configure the project for shadcn components.
+2.  **Initialize shadcn:**
+    *   Run the `shadcn init` command to configure the project for shadcn components.
     *   Command:
         ```bash
-        npx shadcn-ui@latest init
+        npx shadcn@latest init
         ```
     *   **Configuration Prompts (Example Choices):**
         *   `Which style would you like to use? › Default`
@@ -279,11 +280,23 @@ Set up Supabase client and fetch project data.
     *   Create a table named `projects` with the following columns:
         *   `id` (uuid, primary key, default: `gen_random_uuid()`)
         *   `created_at` (timestamp with time zone, default: `now()`)
+        *   `slug` (text, unique, not null) - User-friendly identifier for URLs (e.g., "my-awesome-project")
         *   `title` (text, not null)
         *   `description` (text)
-        *   `image_url` (text) - Store URL to image (e.g., hosted on Supabase Storage or elsewhere)
+        *   `brief_title` (text) - The "Built from the Brands Out" title from mockup
+        *   `hero_image_url` (text) - URL for the main project image
+        *   `image_url` (text) - URL for the card image (can be same as hero)
         *   `project_link` (text) - URL to the live project or repository
-    *   Enable Row Level Security (RLS) on the `projects` table and create a policy that allows public read access (`SELECT`). Example Policy:
+        *   `client_name` (text)
+        *   `website` (text) - Client website URL
+        *   `category` (text)
+        *   `date` (date or text) - Project completion date
+        *   `services` (text[]) - Array of services provided
+        *   `tech_stack` (text[]) - Array of technologies used
+        *   `industry_tags` (text[]) - Array of relevant industry tags
+        *   `gallery_images` (jsonb) - Array of objects, each with `url` and optional `caption` (e.g., `[{ "url": "...", "caption": "..." }]`)
+        *   `content_sections` (jsonb) - Flexible structure for the 3 content sections (e.g., array of objects with `title`, `text`, `image_url`)
+    *   Enable Row Level Security (RLS) on the `projectclayton` table and create a policy that allows public read access (`SELECT`). Example Policy:
         *   Name: `Allow public read access`
         *   Target roles: `anon`, `authenticated`
         *   Using expression: `true`
@@ -322,17 +335,29 @@ Set up Supabase client and fetch project data.
         ```typescript
         export interface Project {
           id: string;
+          slug: string;
           title: string;
           description: string | null;
-          image_url: string | null;
+          brief_title: string | null;
+          hero_image_url: string | null;
+          image_url: string | null; // For the card
           project_link: string | null;
+          client_name: string | null;
+          website: string | null;
+          category: string | null;
+          date: string | null; // Keep as string for flexibility, parse if needed
+          services: string[] | null;
+          tech_stack: string[] | null;
+          industry_tags: string[] | null;
+          gallery_images: { url: string; caption?: string }[] | null;
+          content_sections: any | null; // Define more strictly if possible later
           created_at: string; // Or Date if you parse it
         }
         ```
 
 6.  **Implement Data Fetching Function:**
     *   This function can be placed in `src/lib/data.ts` or directly used within the server component. For server components, direct fetching is often simpler.
-    *   Example fetching logic within `src/app/page.tsx`:
+    *   **Homepage Fetching:** Example fetching logic within `src/app/page.tsx`:
         ```typescript
         import { WavesHero } from "@/components/waves-hero";
         import { supabase } from "@/lib/supabaseClient"; // Import Supabase client
@@ -351,11 +376,29 @@ Set up Supabase client and fetch project data.
             return [];
           }
           // Basic type assertion (consider more robust validation if needed)
+          // Basic type assertion (consider more robust validation if needed)
           return data as Project[];
         }
 
+        // Function to fetch a single project by slug (can be defined here or in lib/data.ts)
+        async function getProjectBySlug(slug: string): Promise<Project | null> {
+          const { data, error } = await supabase
+            .from('projects')
+            .select('*')
+            .eq('slug', slug) // Filter by slug
+            .single(); // Expect only one result
+
+          if (error) {
+            console.error(`Error fetching project with slug ${slug}:`, error);
+            // Return null if not found or error occurs
+            return null;
+          }
+          return data as Project;
+        }
+
+
         export default async function HomePage() { // Make the component async
-          const projects = await getProjects(); // Fetch data
+          const projects = await getProjects(); // Fetch data for the homepage grid
 
           return (
             <div>
@@ -382,7 +425,7 @@ Set up Supabase client and fetch project data.
 7.  **Create Project Card Component:**
     *   File: `src/components/project-card.tsx`
     *   Use shadcn Card component as a base.
-    *   Command to add Card component: `npx shadcn-ui@latest add card`
+    *   Command to add Card component: `npx shadcn@latest add card`
     *   Content (Example):
         ```typescript
         import Image from "next/image";
@@ -395,7 +438,7 @@ Set up Supabase client and fetch project data.
           CardHeader,
           CardTitle,
         } from "@/components/ui/card"; // Auto-imported by shadcn add
-        import { Button } from "@/components/ui/button"; // Add button: npx shadcn-ui@latest add button
+        import { Button } from "@/components/ui/button"; // Add button: npx shadcn@latest add button
         import { Project } from "@/types/project";
         import { ExternalLink } from "lucide-react"; // Icon
 
@@ -430,19 +473,188 @@ Set up Supabase client and fetch project data.
               <CardFooter>
                 {project.project_link && (
                   <Button asChild variant="outline" size="sm">
-                    <Link href={project.project_link} target="_blank" rel="noopener noreferrer">
-                      View Project <ExternalLink className="ml-2 h-4 w-4" />
+                    {/* Link the entire card or a specific button to the detail page */}
+                    <Link href={`/projects/${project.slug}`} className="mt-auto"> {/* Link uses slug */}
+                       <Button variant="outline" size="sm" className="w-full">
+                         View Details
+                       </Button>
                     </Link>
-                  </Button>
-                )}
+                  {/* Optionally keep external link if needed */}
+                  {/* {project.project_link && (
+                    <Button asChild variant="ghost" size="sm">
+                      <Link href={project.project_link} target="_blank" rel="noopener noreferrer">
+                        <ExternalLink className="h-4 w-4" />
+                      </Link>
+                    </Button>
+                  )} */}
               </CardFooter>
             </Card>
           );
         }
         ```
-    *   **Update Homepage (`src/app/page.tsx`)**: Replace the placeholder `<p>` tag with `<ProjectCard key={project.id} project={project} />` and import `ProjectCard`. Add the Button component (`npx shadcn-ui@latest add button`).
+    *   **Update Homepage (`src/app/page.tsx`)**: Replace the placeholder `<p>` tag with `<ProjectCard key={project.id} project={project} />` and import `ProjectCard`. Add the Button component (`npx shadcn@latest add button`).
 
-## 6. Page Creation (About, Contact)
+## 6. Dynamic Project Detail Page
+
+Create the dynamic route and component to display individual project details.
+
+**Steps:**
+
+1.  **Create Dynamic Route File:**
+    *   File: `src/app/projects/[slug]/page.tsx`
+    *   This file will handle requests like `/projects/my-first-project`.
+
+2.  **Implement Page Component:**
+    *   This will be an `async` Server Component to fetch data based on the `slug` parameter.
+    *   Use the `getProjectBySlug` function defined earlier (or move it to `src/lib/data.ts`).
+    *   Handle cases where the project is not found (e.g., using `notFound()` from `next/navigation`).
+    *   Structure the page layout based on the mockup and research:
+        *   **Hero Image:** Display `project.hero_image_url`.
+        *   **Metadata Section:** Show `client_name`, `website`, `category`, `date`, `services`. Use shadcn `Badge` for tags/services if desired (`npx shadcn@latest add badge`). Style with a distinct background as per mockup.
+        *   **Project Brief:** Display `project.brief_title` prominently and the main `project.description`.
+        *   **Tech Stack:** List `project.tech_stack`. Consider using icons alongside text.
+        *   **Content Sections:** Render the data from `project.content_sections`. This might involve mapping over an array and using different layouts based on the section type.
+        *   **Gallery:** Display images from `project.gallery_images`. Consider using a carousel component (e.g., shadcn `Carousel`: `npx shadcn@latest add carousel`) or a custom grid layout.
+    *   **Modularity & Performance:** Build the page using reusable React components. Leverage Next.js Server Components for efficient data fetching and rendering. Consider using `generateStaticParams` if the number of projects is manageable, for optimal static generation performance.
+    *   **SEO:** Implement dynamic metadata generation (title, description) based on project data using Next.js `generateMetadata` function. Ensure semantic HTML structure.
+    *   Example Structure (`src/app/projects/[slug]/page.tsx`):
+        ```typescript
+        import { supabase } from "@/lib/supabaseClient"; // Assuming client is needed or move fetch to lib
+        import { Project } from "@/types/project";
+        import { notFound } from 'next/navigation';
+        import Image from 'next/image';
+        import Link from 'next/link';
+        import { Badge } from "@/components/ui/badge"; // Example component
+        // Import other necessary components (Button, Carousel, etc.)
+
+        // Fetch function (can be here or in lib/data.ts)
+        async function getProjectBySlug(slug: string): Promise<Project | null> {
+          // ... (fetch logic as defined in Section 5)
+           const { data, error } = await supabase
+            .from('projects')
+            .select('*')
+            .eq('slug', slug)
+            .single();
+           if (error || !data) {
+             console.error(`Error fetching project ${slug}:`, error);
+             return null;
+           }
+           return data as Project;
+        }
+
+        interface ProjectPageProps {
+          params: { slug: string };
+        }
+
+        export default async function ProjectPage({ params }: ProjectPageProps) {
+          const project = await getProjectBySlug(params.slug);
+
+          if (!project) {
+            notFound(); // Trigger 404 page if project not found
+          }
+
+          return (
+            <div className="container mx-auto px-4 py-16">
+              {/* 1. Hero Image */}
+              {project.hero_image_url && (
+                <div className="relative mb-8 h-64 md:h-96 w-full overflow-hidden rounded-lg">
+                  <Image src={project.hero_image_url} alt={`${project.title} Hero Image`} layout="fill" objectFit="cover" />
+                </div>
+              )}
+
+              {/* 2. Metadata Section (Example Layout) */}
+              <div className="mb-8 rounded-lg bg-muted/50 p-6">
+                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                   {project.client_name && <div><strong>Client:</strong> {project.client_name}</div>}
+                   {project.website && <div><strong>Website:</strong> <Link href={project.website} target="_blank" className="text-primary hover:underline">{project.website}</Link></div>}
+                   {project.category && <div><strong>Category:</strong> {project.category}</div>}
+                   {project.date && <div><strong>Date:</strong> {project.date}</div>}
+                   {project.services && project.services.length > 0 && (
+                     <div className="col-span-2 md:col-span-4">
+                       <strong>Services:</strong>
+                       <div className="mt-1 flex flex-wrap gap-2">
+                         {project.services.map(service => <Badge key={service} variant="secondary">{service}</Badge>)}
+                       </div>
+                     </div>
+                   )}
+                 </div>
+              </div>
+
+              {/* 3. Project Brief */}
+              <h1 className="mb-2 text-3xl md:text-5xl font-bold">{project.brief_title || project.title}</h1>
+              {project.description && <p className="mb-8 text-lg text-muted-foreground">{project.description}</p>}
+
+              {/* 4. Tech Stack */}
+              {project.tech_stack && project.tech_stack.length > 0 && (
+                <div className="mb-8">
+                  <h2 className="mb-2 text-xl font-semibold">Tech Stack</h2>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tech_stack.map(tech => <Badge key={tech}>{tech}</Badge>)}
+                  </div>
+                </div>
+              )}
+
+              {/* 5. Content Sections (Render based on project.content_sections structure) */}
+              {/* Example: Render simple title/text sections */}
+              {/* {project.content_sections?.map((section, index) => (
+                <div key={index} className="mb-8">
+                  <h2 className="text-2xl font-semibold mb-4">{section.title}</h2>
+                  <p>{section.text}</p>
+                  {section.image_url && <Image src={section.image_url} alt={section.title} width={800} height={400} className="mt-4 rounded-lg"/>}
+                </div>
+              ))} */}
+
+              {/* 6. Gallery */}
+              {project.gallery_images && project.gallery_images.length > 0 && (
+                 <div className="mb-8">
+                   <h2 className="mb-4 text-2xl font-semibold">Gallery</h2>
+                   {/* Add Carousel or Grid component here */}
+                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                     {project.gallery_images.map((img, index) => (
+                       <div key={index} className="relative aspect-video overflow-hidden rounded-lg">
+                          <Image src={img.url} alt={img.caption || `Gallery image ${index + 1}`} layout="fill" objectFit="cover" />
+                          {img.caption && <p className="absolute bottom-0 left-0 bg-black/50 text-white p-1 text-xs">{img.caption}</p>}
+                       </div>
+                     ))}
+                   </div>
+                 </div>
+              )}
+
+              {/* Optional: Link back to projects or next/prev project */}
+            </div>
+          );
+        }
+
+        // Optional: Generate static paths if needed (for performance)
+        export async function generateStaticParams() {
+           // Fetch all slugs for static generation (improves performance)
+           const { data: projects } = await supabase.from('projects').select('slug');
+           return projects?.map(({ slug }) => ({ slug })) || [];
+        }
+
+        // Optional: Generate dynamic metadata for SEO
+        // export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
+        //   const project = await getProjectBySlug(params.slug);
+        //   if (!project) {
+        //     return { title: 'Project Not Found', description: '' };
+        //   }
+        //   return {
+        //     title: `${project.title} | Portfolio`,
+        //     description: project.description?.substring(0, 160) || 'Project details', // Truncate description
+        //     // Add other metadata like open graph tags
+        //   };
+        // }
+        ```
+
+3.  **Add Necessary UI Components:**
+    *   Install any shadcn components used in the detail page structure (e.g., `Badge`, `Carousel`).
+    *   Commands:
+        ```bash
+        npx shadcn@latest add badge
+        npx shadcn@latest add carousel
+        ```
+
+## 7. Page Creation (About, Contact)
 
 Create the basic structure for the About and Contact pages.
 
@@ -469,7 +681,7 @@ Create the basic structure for the About and Contact pages.
     *   File: `src/app/contact/page.tsx`
     *   Content (Placeholder):
         ```typescript
-        // Consider adding shadcn form components later: npx shadcn-ui@latest add form input textarea label
+        // Consider adding shadcn form components later: npx shadcn@latest add form input textarea label
         export default function ContactPage() {
           return (
             <div className="container mx-auto px-4 py-16">
@@ -487,14 +699,14 @@ Create the basic structure for the About and Contact pages.
         }
         ```
 
-## 7. Navigation (Basic)
+## 8. Navigation (Basic)
 
 Add a simple navigation bar. A more interactive one (like FloatingNav) can be added later.
 
 **Steps:**
 
 1.  **Add shadcn Navigation Menu:**
-    *   Command: `npx shadcn-ui@latest add navigation-menu`
+    *   Command: `npx shadcn@latest add navigation-menu`
 2.  **Create Header Component:**
     *   File: `src/components/header.tsx`
     *   Content (Example):
@@ -570,7 +782,7 @@ Add a simple navigation bar. A more interactive one (like FloatingNav) can be ad
         export const siteConfig = {
           name: "Portfolio",
           description:
-            "Modern portfolio built with Next.js, shadcn/ui, and Supabase.",
+            "Modern portfolio built with Next.js, shadcn, and Supabase.",
           mainNav: [
             {
               title: "Home",
@@ -615,17 +827,22 @@ Add a simple navigation bar. A more interactive one (like FloatingNav) can be ad
         }
         ```
 
-## 8. Further Enhancements (Future Steps)
+## 9. Further Enhancements (Future Steps)
 
 *   **Interactive Components:** Integrate other components like `FloatingNav`, `Spotlight`, `AnimatedTestimonials`, `Sparkles`, `GooeyFilter` as needed, following similar integration steps (add component via shadcn CLI or copy code, install dependencies, use in pages/components).
 *   **Contact Form:** Implement a functional contact form on the Contact page using shadcn Form components and potentially an API route or server action to handle submission.
 *   **Styling & Polish:** Refine Tailwind CSS styles, add micro-interactions, and ensure responsiveness across devices.
-*   **Image Optimization:** Use Next.js `<Image>` component effectively. Consider storing images in Supabase Storage.
-*   **SEO:** Add appropriate metadata to pages.
-*   **Testing:** Implement unit and integration tests (Jest, React Testing Library).
-*   **Deployment:** Configure deployment (e.g., Vercel, Netlify, AWS).
+*   **Image Optimization:** Use Next.js `<Image>` component effectively. Consider storing images in Supabase Storage or a dedicated CDN. Optimize image sizes and formats.
+*   **SEO Optimization (Site-wide):** Implement comprehensive SEO strategy including:
+    *   Dynamic metadata generation for all relevant pages (projects, potentially blog posts if added).
+    *   Structured data (Schema.org) for projects and potentially the overall site/person.
+    *   Generating a `sitemap.xml` and `robots.txt`.
+    *   Ensuring semantic HTML and accessibility best practices.
+*   **Performance Monitoring & Optimization:** Regularly analyze site performance using tools like Lighthouse and Vercel Analytics. Optimize bundle sizes, implement code splitting where necessary, and fine-tune caching strategies.
+*   **Testing:** Implement unit and integration tests (Jest, React Testing Library). Add E2E tests with Playwright for critical user flows.
+*   **Deployment:** Configure deployment (e.g., Vercel, Netlify, AWS). Set up CI/CD pipeline for automated testing and deployment.
 
-## 9. Research and Documentation (Perplexity MCP)
+## 10. Research and Documentation (Perplexity MCP)
 
 Throughout the development process, the Perplexity MCP server can be used for:
 

@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import type { Header } from 'next/dist/lib/load-custom-routes'; // Import Header type
 
 const securityHeaders = [
   // Prevent MIME-sniffing
@@ -31,7 +32,7 @@ const securityHeaders = [
       `script-src 'self' 'unsafe-eval' 'unsafe-inline' va.vercel-scripts.com`,
       `style-src 'self' 'unsafe-inline'`,
       // Allow images from self, data URIs, placeholder, and Supabase
-      `img-src 'self' data: https://via.placeholder.com https://igyrkokjtrhsnrivmotx.supabase.co`,
+      `img-src 'self' data: https://via.placeholder.com https://placehold.co https://igyrkokjtrhsnrivmotx.supabase.co`, // Added placehold.co
       // Allow fonts from self (add external sources if needed)
       `font-src 'self'`,
       // Allow connections to self and Supabase
@@ -47,17 +48,20 @@ const securityHeaders = [
 
 
 const nextConfig: NextConfig = {
-  async headers() {
+  async headers(): Promise<Header[]> { // Add explicit return type
     return [
       {
         // Apply these headers to all routes in your application.
         source: '/:path*',
         headers: securityHeaders,
       },
+      // [Remove the misplaced placehold.co object from here]
     ];
   },
   images: {
-    remotePatterns: [
+    dangerouslyAllowSVG: true, // Allow remote SVGs
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;", // Recommended CSP for SVGs
+    remotePatterns: [ // Define the array ONCE
       {
         protocol: 'https',
         hostname: 'via.placeholder.com',
@@ -66,12 +70,18 @@ const nextConfig: NextConfig = {
       },
       {
          protocol: 'https',
-         hostname: 'igyrkokjtrhsnrivmotx.supabase.co', // Added Supabase hostname
+         hostname: 'igyrkokjtrhsnrivmotx.supabase.co', // Supabase hostname
          port: '',
-         pathname: '/**', // Made pathname more permissive
+         pathname: '/**',
        },
-     ],
-  },
+      {
+        protocol: 'https',
+        hostname: 'placehold.co', // placehold.co hostname
+        port: '',
+        pathname: '/**',
+      },
+     ], // End of the single remotePatterns array
+  }, // End of images object
 };
 
 export default nextConfig;
