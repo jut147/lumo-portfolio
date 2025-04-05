@@ -1,8 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 import path from 'path';
 
-// Use process.env.PORT by default and fallback to 3000 if not available.
-const PORT = process.env.PORT || 3000;
+// Use a less common port like 3030 to avoid conflicts
+const PORT = process.env.PORT || 3030;
 const baseURL = `http://localhost:${PORT}`;
 
 /**
@@ -21,7 +21,8 @@ export default defineConfig({
   // Run your local dev server before starting the tests
   // https://playwright.dev/docs/test-advanced#launching-a-development-web-server-during-the-tests
   webServer: {
-    command: 'npm run dev',
+    // Explicitly tell npm run dev to use the chosen port
+    command: `npm run dev -- -p ${PORT}`,
     url: baseURL,
     timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,

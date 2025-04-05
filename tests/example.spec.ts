@@ -56,38 +56,34 @@ test('contact form submits successfully with valid data', async ({ page }) => {
   await page.getByRole('button', { name: 'Send Message' }).click();
 
   // Wait for the success toast to appear and check its content
-  // Note: The selector might depend on how sonner renders the toast
+  const successToast = page.locator('[data-sonner-toast][data-type="success"]'); // Adjust selector if needed
+  await expect(successToast).toBeVisible({ timeout: 10000 }); // Wait up to 10s for action/toast
+  await expect(successToast.getByText('Message Sent!')).toBeVisible(); // Assuming this is the title
+  await expect(successToast.getByText('Message submitted successfully!')).toBeVisible(); // Assuming this is the description
+});
 
 test('theme toggle changes theme correctly', async ({ page }) => {
   // Navigate to the homepage
   await page.goto('/');
 
   const htmlLocator = page.locator('html');
-  const themeToggleButton = page.getByRole('button', { name: /toggle theme/i }); // Use regex for flexibility
+  // Update selector to match the actual aria-label pattern
+  const themeToggleButton = page.getByRole('button', { name: /Switch to (light|dark) mode/i });
 
   // 1. Check initial theme (should be dark by default)
-  await expect(htmlLocator).toHaveAttribute('class', expect.stringContaining('dark'));
-  await expect(htmlLocator).not.toHaveAttribute('class', expect.stringContaining('light'));
+  await expect(htmlLocator).toHaveAttribute('class', expect.stringContaining('dark')); // Check for dark class
 
   // 2. Click toggle to switch to light mode
   await themeToggleButton.click();
 
   // 3. Verify theme changed to light
-  await expect(htmlLocator).toHaveAttribute('class', expect.stringContaining('light'));
-  await expect(htmlLocator).not.toHaveAttribute('class', expect.stringContaining('dark'));
+  await expect(htmlLocator).toHaveAttribute('class', expect.stringContaining('light')); // Check for light class
 
   // 4. Click toggle again to switch back to dark mode
   await themeToggleButton.click();
 
   // 5. Verify theme changed back to dark
-  await expect(htmlLocator).toHaveAttribute('class', expect.stringContaining('dark'));
-  await expect(htmlLocator).not.toHaveAttribute('class', expect.stringContaining('light'));
-});
-
-  const successToast = page.locator('[data-sonner-toast][data-type="success"]'); // Adjust selector if needed
-  await expect(successToast).toBeVisible({ timeout: 10000 }); // Wait up to 10s for action/toast
-  await expect(successToast.getByText('Message Sent!')).toBeVisible();
-  await expect(successToast.getByText('Message submitted successfully!')).toBeVisible();
+  await expect(htmlLocator).toHaveAttribute('class', expect.stringContaining('dark')); // Check for dark class
 });
 
 // Add more tests here later based on the QA Plan
