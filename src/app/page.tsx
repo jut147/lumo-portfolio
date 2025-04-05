@@ -1,6 +1,6 @@
 // Removed direct imports of client components
 // Removed supabase import as it's now used in lib/data.ts
-import { Project } from "@/types/project"; // Keep Project type if needed, though likely inferred
+// Removed unused Project import
 import { HomePageClient } from "@/components/home-page-client"; // Import the client component
 import { getProjects } from "@/lib/data"; // Import the data fetching function
 

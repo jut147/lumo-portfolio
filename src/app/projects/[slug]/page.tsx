@@ -1,5 +1,6 @@
 // Removed supabase import, using lib/data.ts now
-import { Project, ContentSection } from "@/types/project"; // Import ContentSection
+// Removed unused Project import
+import { ContentSection } from "@/types/project"; // Import ContentSection only
 import { notFound } from 'next/navigation';
 import { getProjectBySlug } from "@/lib/data"; // Import data fetching function
 import Image from 'next/image';

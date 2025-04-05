@@ -21,7 +21,7 @@ export default function TermsOfServicePage() {
         </p>
         <h2 className="text-2xl font-semibold pt-6">3. Disclaimer</h2>
         <p>
-          The materials on this website are provided on an 'as is' basis. Make no
+          The materials on this website are provided on an {'\'as is\''} basis. Make no
           warranties, expressed or implied, and hereby disclaim and negate all
           other warranties...
         </p>

@@ -5,15 +5,7 @@ import { cn } from "@/lib/utils"
 // Noise import is no longer needed here, it's used within the hook
 import { useWavesAnimation } from "@/hooks/use-waves-animation" // Import the custom hook
 
-// Point interface might be needed if WavesProps uses it, or move to shared types
-// Keeping it here for now as the hook also defines it internally.
-// Consider moving to src/types/waves.ts if needed elsewhere.
-interface Point {
-  x: number;
-  y: number;
-  wave: { x: number; y: number };
-  cursor: { x: number; y: number; vx: number; vy: number };
-}
+// Removed unused Point interface definition (it's defined within the hook)
 
 interface WavesProps {
   /**
@@ -53,9 +45,8 @@ export function Waves({
   tension = 0.005,
   maxCursorMove,
   className,
-  // Extract other props if they are not used by the hook
-  ...props // Pass rest props if needed, though unlikely here
-}: WavesProps) {
+}: // Removed unused ...props from destructuring
+WavesProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
