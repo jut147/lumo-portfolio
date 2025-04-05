@@ -1,11 +1,26 @@
 "use client"; // Required for form handling hooks
 
+import React, { useState, useTransition } from "react"; // Remove useEffect, Import useState, useTransition
+// Remove useFormState, keep useFormStatus for now (or manage pending state manually)
+// Remove unused useFormStatus import
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
+import { submitContactForm } from "./actions"; // Import only the action
+// Define local state type similar to ContactFormState
+type FormStatus = "idle" | "pending" | "success" | "error";
+type LocalFormState = {
+  message: string;
+  status: FormStatus;
+  errors?: {
+    name?: string[];
+    email?: string[];
+    message?: string[];
+  };
+};
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"; // Keep Button import
 import {
   Form,
   FormControl,
@@ -30,8 +45,24 @@ const contactFormSchema = z.object({
   }),
 });
 
+// Submit button can now take pending state as a prop
+interface SubmitButtonProps {
+  isPending: boolean;
+}
+function SubmitButton({ isPending }: SubmitButtonProps) {
+  return (
+    <Button type="submit" className="w-full" disabled={isPending}>
+      {isPending ? "Sending..." : "Send Message"}
+    </Button>
+  );
+}
+
 export default function ContactPage() {
-  // Define the form using react-hook-form
+  // Local state for submission status
+  const [isPending, startTransition] = useTransition();
+  const [formState, setFormState] = useState<LocalFormState>({ message: "", status: "idle" });
+
+  // Define the form using react-hook-form (still useful for client-side validation)
   const form = useForm<z.infer<typeof contactFormSchema>>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
@@ -41,16 +72,36 @@ export default function ContactPage() {
     },
   });
 
-  // Define the submit handler
-  function onSubmit(values: z.infer<typeof contactFormSchema>) {
-    // For now, just log the values and show a toast
-    // In a real application, you would send this data to an API endpoint
-    console.log(values);
-    toast.success("Message sent successfully!", {
-      description: "Thank you for contacting us. We'll get back to you soon.",
+  // Define the submit handler to call the server action
+  async function onSubmit(values: z.infer<typeof contactFormSchema>) {
+    startTransition(async () => {
+      setFormState({ message: "", status: "pending" }); // Set pending state
+
+      // Create FormData
+      const formData = new FormData();
+      formData.append("name", values.name);
+      formData.append("email", values.email);
+      formData.append("message", values.message);
+
+      try {
+        const result = await submitContactForm(formData);
+        setFormState(result); // Update local state with result from action
+
+        if (result.status === "success") {
+          toast.success("Message Sent!", { description: result.message });
+          form.reset();
+        } else {
+          toast.error("Submission Failed", { description: result.message || "Please check the form for errors." });
+          // Update local state with errors for display
+          setFormState(prev => ({ ...prev, errors: result.errors }));
+        }
+      } catch (error) {
+        console.error("Client-side error calling action:", error);
+        const errorState = { message: "An unexpected error occurred.", status: "error" as FormStatus };
+        setFormState(errorState);
+        toast.error("Error", { description: errorState.message });
+      }
     });
-    // Optionally reset the form
-    // form.reset();
   }
 
   return (
@@ -63,6 +114,7 @@ export default function ContactPage() {
 
       <div className="mx-auto max-w-md">
         <Form {...form}>
+          {/* Use react-hook-form's handleSubmit */}
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
@@ -73,7 +125,9 @@ export default function ContactPage() {
                   <FormControl>
                     <Input placeholder="Your Name" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage>{/* RHF Client-side error */}</FormMessage>
+                  {/* Display server-side error from local state */}
+                  {formState.errors?.name && <p className="text-sm font-medium text-destructive">{formState.errors.name[0]}</p>}
                 </FormItem>
               )}
             />
@@ -86,7 +140,9 @@ export default function ContactPage() {
                   <FormControl>
                     <Input placeholder="your.email@example.com" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage>{/* RHF Client-side error */}</FormMessage>
+                  {/* Display server-side error from local state */}
+                  {formState.errors?.email && <p className="text-sm font-medium text-destructive">{formState.errors.email[0]}</p>}
                 </FormItem>
               )}
             />
@@ -103,11 +159,18 @@ export default function ContactPage() {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage>{/* RHF Client-side error */}</FormMessage>
+                  {/* Display server-side error from local state */}
+                  {formState.errors?.message && <p className="text-sm font-medium text-destructive">{formState.errors.message[0]}</p>}
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">Send Message</Button>
+            {/* Pass pending state to SubmitButton */}
+            <SubmitButton isPending={isPending} />
+            {/* Display general server error message from local state */}
+            {formState.status === 'error' && !formState.errors && (
+               <p className="text-sm font-medium text-destructive">{formState.message}</p>
+            )}
           </form>
         </Form>
       </div>

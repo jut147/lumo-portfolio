@@ -76,6 +76,13 @@
   --sidebar-ring: oklch(0.708 0 0);
   --background: oklch(1 0 0);
   --foreground: oklch(0.129 0.042 264.695);
+
+  /* Rainbow Button Colors */
+  --color-1: 190 95% 60%; /* Teal */
+  --color-2: 220 90% 65%; /* Blue */
+  --color-3: 290 85% 60%; /* Purple */
+  --color-4: 340 90% 65%; /* Pink */
+  --color-5: 40 95% 60%;  /* Orange */
 }
 
 .dark {

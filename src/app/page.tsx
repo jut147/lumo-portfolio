@@ -8,7 +8,7 @@ import { HomePageClient } from "@/components/home-page-client"; // Import the ne
 // Function to fetch projects (can be defined here or in lib/data.ts)
 async function getProjects(): Promise<Project[]> {
   const { data, error } = await supabase
-    .from('projects')
+    .from('projectclayton')
     .select('*')
     .order('created_at', { ascending: false }); // Example ordering
 
@@ -18,9 +18,28 @@ async function getProjects(): Promise<Project[]> {
     return [];
   }
   // Basic type assertion (consider more robust validation if needed)
+  // Basic type assertion (consider more robust validation if needed)
   return data as Project[];
 }
 
+// Function to fetch a single project by slug (can be defined here or in lib/data.ts)
+// Remove unused function getProjectBySlug
+/*
+async function getProjectBySlug(slug: string): Promise<Project | null> {
+  const { data, error } = await supabase
+    .from('projectclayton')
+    .select('*')
+    .eq('slug', slug) // Filter by slug
+    .single(); // Expect only one result
+
+  if (error) {
+    console.error(`Error fetching project with slug ${slug}:`, error);
+    // Return null if not found or error occurs
+    return null;
+  }
+  return data as Project;
+}
+*/
 
 export default async function HomePage() { // Make the component async
   const projects = await getProjects(); // Fetch data
