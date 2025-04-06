@@ -16,7 +16,6 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
  } from "@/components/ui/navigation-menu"
- // import { Icons } from "@/components/icons" // Optional: for logo
  import { ThemeToggle } from "@/components/ui/theme-toggle" // Import ThemeToggle
  import { MobileNav } from "@/components/mobile-nav" // Import MobileNav
 
@@ -54,33 +53,17 @@ import {
        <div className="flex h-14 items-center px-4 lg:px-8 max-w-screen-2xl mx-auto">
          {/* Logo/Brand */}
          <Link href="/" className="mr-6 flex items-center space-x-2">
-           {/* Conditionally render logo based on theme *after mount* */}
-           {mounted && theme === 'dark' ? (
-             // Wrap Image in a div with rounding and overflow hidden
-             <div className="h-7 w-7 rounded overflow-hidden"> {/* Increased size */}
-               <Image
-                 src="/logo-white-black-bacground.svg" // Dark theme logo
-                 alt={`${siteConfig.name} Logo`}
-                 width={28} // Increased size
-                 height={28} // Increased size
-                 // className="h-7" // Class moved to wrapper
-                 priority // Prioritize loading the visible logo
-               />
-             </div>
-           ) : (
-             // Render light theme logo by default (server & initial client) or if theme is light
-             // Wrap Image in a div with rounding and overflow hidden
-             <div className="h-7 w-7 rounded overflow-hidden"> {/* Increased size */}
-               <Image
-                 src="/logo-black-trans-bacground.svg" // Light theme logo (default)
-                 alt={`${siteConfig.name} Logo`}
-                 width={28} // Increased size
-                 height={28} // Increased size
-                 // className="h-7" // Class moved to wrapper
-                 priority // Prioritize loading the visible logo
-               />
-             </div>
-           )}
+           {/* Logo - Conditionally set src based on theme after mount */}
+           <div className="h-7 w-7 rounded overflow-hidden"> {/* Increased size */}
+             <Image
+               // Default to light logo, switch to dark logo if mounted and theme is dark
+               src={mounted && theme === 'dark' ? "/logo-white-black-bacground.svg" : "/logo-black-trans-bacground.svg"}
+               alt={`${siteConfig.name} Logo`}
+               width={28} // Increased size
+               height={28} // Increased size
+               priority // Prioritize loading the visible logo
+             />
+           </div>
            {/* Remove the text span */}
            {/* <span className="font-bold sm:inline-block">
              {siteConfig.name}

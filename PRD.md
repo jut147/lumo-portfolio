@@ -60,8 +60,8 @@ This document outlines the product requirements for a personal portfolio website
 *   **Purpose:** Allow visitors to send messages directly through the website.
 *   **Components:**
     *   Contact form (Name, Email, Message).
-    *   Submission handled by a Next.js Server Action (`src/app/contact/actions.ts`).
-    *   Success/Error feedback messages (using `sonner` toast notifications).
+    *   Submission handled by a Next.js Server Action (`src/app/contact/actions.ts`). **Note:** The action currently includes validation but has placeholder logic for the actual submission (e.g., saving to DB).
+    *   Success/Error feedback messages (using `sonner` toast notifications) are returned based on validation results or simulated success.
     *   Basic spam protection (e.g., honeypot, rate limiting - Future Consideration).
 
 ### 3.6. Theme Toggle
@@ -86,13 +86,13 @@ This document outlines the product requirements for a personal portfolio website
 
 ### 4.1. Data Fetching
 *   Project data (list and details) will be fetched from the Supabase `projectclayton` table.
-*   Fetching will occur server-side (React Server Components) for optimal performance and SEO.
-*   The `supabaseClient` (`src/lib/supabaseClient.ts`) will be used for database interactions.
+*   Fetching occurs server-side, primarily through dedicated functions in `src/lib/data.ts`. These functions use the `supabaseClient` (`src/lib/supabaseClient.ts`) and incorporate Zod schemas for runtime data validation, ensuring data integrity before it's used in Server Components.
+*   Server Components call these data fetching functions to get validated project data.
 
 ### 4.2. Contact Form Submission
 *   The contact form will submit data via a Next.js Server Action.
-*   The Server Action will validate input data.
-*   Upon successful validation, the action will insert the message into a Supabase table (e.g., `contact_submissions`).
+*   The Server Action (`src/app/contact/actions.ts`) validates input data using a Zod schema.
+*   **Note:** The logic to actually insert the message into a Supabase table (e.g., `contact_submissions`) after successful validation is currently a placeholder in the Server Action.
 *   Appropriate success or error feedback will be displayed to the user.
 
 ### 4.3. Theming
@@ -153,18 +153,29 @@ This document outlines the product requirements for a personal portfolio website
 ## 7. Data Model
 
 *   **Primary Data Source:** Supabase PostgreSQL database.
-*   **Key Table:** `projects`
+*   **Key Table:** `projectclayton`
+    *   Schema should align with the `Project` type and Zod validation in `src/lib/data.ts`. Key fields include:
     *   `id` (uuid, primary key)
     *   `slug` (text, unique identifier for URL)
-    *   `title` (text)
-    *   `description` (text)
-    *   `thumbnail_url` (text)
-    *   `live_url` (text, optional)
-    *   `repo_url` (text, optional)
-    *   `tags` (array of text, optional)
-    *   `created_at` (timestamp)
-    *   `content_sections` (jsonb array): Stores the content for project detail pages. Each object in the array has a `type` ('text' or 'image') and corresponding data (`content` for text, `src` for image).
-        *   Example: `[{ "type": "text", "content": "Detailed paragraph about the project." }, { "type": "image", "src": "/images/project-screenshot.png" }]`
+    *   `title_client` (text) - Main display title
+    *   `project_brief_description` (text) - Main description text
+    *   `hero_image_url` (text) - URL for large hero image
+    *   `image_url` (text) - URL for card thumbnail image
+    *   `project_link` (text, optional) - URL to live demo/repo
+    *   `client_name` (text, optional)
+    *   `client_website` (text, optional)
+    *   `category` (text, optional)
+    *   `date_completed` (text or date, optional)
+    *   `services` (text[], optional) - Array of services
+    *   `tech_stack` (text[], optional) - Array of technologies
+    *   `industry_tags` (text[], optional) - Array of tags
+    *   `gallery_images` (text[], optional) - Array of image URLs for gallery
+    *   `content_sections` (jsonb array, optional): Stores structured content (e.g., text/image blocks) for project detail pages. Example: `[{ "type": "text", "content": "..." }, { "type": "image", "src": "...", "alt": "..." }]`
+    *   `brief_block[1-4]_title`, `brief_block[1-4]_text`, `brief_block[1-4]_image` (text, optional) - Fields for structured content blocks.
+    *   `outcome` (text, optional)
+    *   `testimonial` (text, optional)
+    *   `featured` (boolean, optional)
+    *   `created_at` (timestamp with time zone)
 *   **Other Table (Potential):** `contact_submissions`
     *   `id` (uuid, primary key)
     *   `name` (text)

@@ -277,25 +277,31 @@ Set up Supabase client and fetch project data.
 
 2.  **Set up Supabase Project:**
     *   Go to [supabase.com](https://supabase.com/), create an account/project if you haven't already.
-    *   Create a table named `projects` with the following columns:
+    *   Create a table named `projectclayton` with columns corresponding to the `Project` type and Zod schema in `src/lib/data.ts`. Key columns include:
         *   `id` (uuid, primary key, default: `gen_random_uuid()`)
         *   `created_at` (timestamp with time zone, default: `now()`)
-        *   `slug` (text, unique, not null) - User-friendly identifier for URLs (e.g., "my-awesome-project")
-        *   `title` (text, not null)
-        *   `description` (text)
-        *   `brief_title` (text) - The "Built from the Brands Out" title from mockup
+        *   `slug` (text, unique, not null)
+        *   `title_client` (text) - Main display title
+        *   `project_brief_description` (text) - Main description
         *   `hero_image_url` (text) - URL for the main project image
-        *   `image_url` (text) - URL for the card image (can be same as hero)
+        *   `image_url` (text) - URL for the card image
         *   `project_link` (text) - URL to the live project or repository
         *   `client_name` (text)
-        *   `website` (text) - Client website URL
+        *   `client_website` (text)
         *   `category` (text)
-        *   `date` (date or text) - Project completion date
-        *   `services` (text[]) - Array of services provided
-        *   `tech_stack` (text[]) - Array of technologies used
-        *   `industry_tags` (text[]) - Array of relevant industry tags
-        *   `gallery_images` (jsonb) - Array of objects, each with `url` and optional `caption` (e.g., `[{ "url": "...", "caption": "..." }]`)
-        *   `content_sections` (jsonb) - Flexible structure for the 3 content sections (e.g., array of objects with `title`, `text`, `image_url`)
+        *   `date_completed` (text or date)
+        *   `services` (text[])
+        *   `tech_stack` (text[])
+        *   `industry_tags` (text[])
+        *   `gallery_images` (text[]) - Array of image URLs
+        *   `content_sections` (jsonb) - Array of text/image objects
+        *   `brief_block1_title`, `brief_block1_text`, `brief_block1_image` (text) - For content sections
+        *   `brief_block2_title`, `brief_block2_text`, `brief_block2_image` (text)
+        *   `brief_block3_title`, `brief_block3_text`, `brief_block3_image` (text)
+        *   `brief_block4_title`, `brief_block4_text`, `brief_block4_image` (text)
+        *   `outcome` (text)
+        *   `testimonial` (text)
+        *   `featured` (boolean)
     *   Enable Row Level Security (RLS) on the `projectclayton` table and create a policy that allows public read access (`SELECT`). Example Policy:
         *   Name: `Allow public read access`
         *   Target roles: `anon`, `authenticated`
@@ -333,69 +339,66 @@ Set up Supabase client and fetch project data.
     *   File: `src/types/project.ts` (Create this file/directory if needed)
     *   Content:
         ```typescript
+        // Note: This is illustrative. The actual type should align
+        // with the Zod schema in src/lib/data.ts
         export interface Project {
           id: string;
           slug: string;
-          title: string;
-          description: string | null;
-          brief_title: string | null;
+          title_client: string | null;
+          project_brief_description: string | null;
           hero_image_url: string | null;
-          image_url: string | null; // For the card
+          image_url: string | null;
           project_link: string | null;
           client_name: string | null;
-          website: string | null;
+          client_website: string | null;
           category: string | null;
-          date: string | null; // Keep as string for flexibility, parse if needed
+          date_completed: string | null;
           services: string[] | null;
           tech_stack: string[] | null;
           industry_tags: string[] | null;
-          gallery_images: { url: string; caption?: string }[] | null;
-          content_sections: any | null; // Define more strictly if possible later
-          created_at: string; // Or Date if you parse it
+          gallery_images: string[] | null; // Array of URLs
+          content_sections: { type: 'text', content: string }[] | { type: 'image', src: string, alt?: string }[] | null; // Example structure
+          brief_block1_title: string | null;
+          brief_block1_text: string | null;
+          brief_block1_image: string | null;
+          // ... other brief blocks ...
+          outcome: string | null;
+          testimonial: string | null;
+          featured: boolean | null;
+          created_at: string | null; // ISO 8601 string
         }
         ```
 
 6.  **Implement Data Fetching Function:**
-    *   This function can be placed in `src/lib/data.ts` or directly used within the server component. For server components, direct fetching is often simpler.
-    *   **Homepage Fetching:** Example fetching logic within `src/app/page.tsx`:
+    *   Data fetching functions are centralized in `src/lib/data.ts`. These functions use the `supabaseClient` and perform Zod validation. Server Components should import and use these functions.
+    *   **Homepage Fetching:** Example usage within `src/app/page.tsx`:
         ```typescript
         import { WavesHero } from "@/components/waves-hero";
-        import { supabase } from "@/lib/supabaseClient"; // Import Supabase client
-        import { Project } from "@/types/project"; // Import Project type
+        import { getProjects } from "@/lib/data"; // Import the data fetching function
+        import { ProjectCard } from "@/components/project-card"; // Import ProjectCard
 
-        // Function to fetch projects (can be defined here or in lib/data.ts)
-        async function getProjects(): Promise<Project[]> {
-          const { data, error } = await supabase
-            .from('projects')
-            .select('*')
-            .order('created_at', { ascending: false }); // Example ordering
+        export default async function HomePage() { // Make the component async
+          const projects = await getProjects(); // Fetch validated data using the function
 
-          if (error) {
-            console.error("Error fetching projects:", error);
-            // Handle error appropriately - maybe return empty array or throw
-            return [];
-          }
-          // Basic type assertion (consider more robust validation if needed)
-          // Basic type assertion (consider more robust validation if needed)
-          return data as Project[];
+          return (
+            <div>
+              <WavesHero />
+              <div className="container mx-auto px-4 py-16">
+                 <h2 className="mb-8 text-center text-3xl font-bold">Projects</h2>
+                 {projects.length > 0 ? (
+                   <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                     {projects.map((project) => (
+                       <ProjectCard key={project.id} project={project} /> // Use ProjectCard
+                     ))}
+                   </div>
+                 ) : (
+                   <p className="text-center text-muted-foreground">No projects found.</p>
+                 )}
+              </div>
+            </div>
+          );
         }
-
-        // Function to fetch a single project by slug (can be defined here or in lib/data.ts)
-        async function getProjectBySlug(slug: string): Promise<Project | null> {
-          const { data, error } = await supabase
-            .from('projects')
-            .select('*')
-            .eq('slug', slug) // Filter by slug
-            .single(); // Expect only one result
-
-          if (error) {
-            console.error(`Error fetching project with slug ${slug}:`, error);
-            // Return null if not found or error occurs
-            return null;
-          }
-          return data as Project;
-        }
-
+        ```
 
         export default async function HomePage() { // Make the component async
           const projects = await getProjects(); // Fetch data for the homepage grid
@@ -506,8 +509,8 @@ Create the dynamic route and component to display individual project details.
 
 2.  **Implement Page Component:**
     *   This will be an `async` Server Component to fetch data based on the `slug` parameter.
-    *   Use the `getProjectBySlug` function defined earlier (or move it to `src/lib/data.ts`).
-    *   Handle cases where the project is not found (e.g., using `notFound()` from `next/navigation`).
+    *   Import and use the `getProjectBySlug` function from `src/lib/data.ts`. This function handles fetching and Zod validation.
+    *   Handle cases where the project is not found or validation fails (the function returns `null`) by calling `notFound()` from `next/navigation`.
     *   Structure the page layout based on the mockup and research:
         *   **Hero Image:** Display `project.hero_image_url`.
         *   **Metadata Section:** Show `client_name`, `website`, `category`, `date`, `services`. Use shadcn `Badge` for tags/services if desired (`npx shadcn@latest add badge`). Style with a distinct background as per mockup.
@@ -519,28 +522,15 @@ Create the dynamic route and component to display individual project details.
     *   **SEO:** Implement dynamic metadata generation (title, description) based on project data using Next.js `generateMetadata` function. Ensure semantic HTML structure.
     *   Example Structure (`src/app/projects/[slug]/page.tsx`):
         ```typescript
-        import { supabase } from "@/lib/supabaseClient"; // Assuming client is needed or move fetch to lib
-        import { Project } from "@/types/project";
+        import { getProjectBySlug } from "@/lib/data"; // Import the data fetching function
+        // Project type is likely inferred or imported within lib/data.ts
         import { notFound } from 'next/navigation';
         import Image from 'next/image';
         import Link from 'next/link';
-        import { Badge } from "@/components/ui/badge"; // Example component
-        // Import other necessary components (Button, Carousel, etc.)
+        import { Badge } from "@/components/ui/badge";
+        // Import other necessary components
 
-        // Fetch function (can be here or in lib/data.ts)
-        async function getProjectBySlug(slug: string): Promise<Project | null> {
-          // ... (fetch logic as defined in Section 5)
-           const { data, error } = await supabase
-            .from('projects')
-            .select('*')
-            .eq('slug', slug)
-            .single();
-           if (error || !data) {
-             console.error(`Error fetching project ${slug}:`, error);
-             return null;
-           }
-           return data as Project;
-        }
+        // Fetch function is defined in src/lib/data.ts
 
         interface ProjectPageProps {
           params: { slug: string };
@@ -627,9 +617,9 @@ Create the dynamic route and component to display individual project details.
 
         // Optional: Generate static paths if needed (for performance)
         export async function generateStaticParams() {
-           // Fetch all slugs for static generation (improves performance)
-           const { data: projects } = await supabase.from('projects').select('slug');
-           return projects?.map(({ slug }) => ({ slug })) || [];
+           // Fetch all slugs using the dedicated function from src/lib/data.ts
+           const slugs = await getAllProjectSlugs(); // Import and call function from lib/data.ts
+           return slugs; // The function returns the correct format [{ slug: string }]
         }
 
         // Optional: Generate dynamic metadata for SEO

@@ -45,28 +45,17 @@ export function MobileNav() {
             onOpenChange={setOpen}
             pathname={pathname} // Pass pathname
           >
-            {/* Conditionally render logo based on theme *after mount* */}
-            {mounted && theme === 'dark' ? (
-              <div className="h-6 w-6 rounded overflow-hidden">
-                <Image
-                  src="/logo-white-black-bacground.svg" // Dark theme logo
-                  alt={`${siteConfig.name} Logo`}
-                  width={24}
-                  height={24}
-                  priority
-                />
-              </div>
-            ) : (
-              <div className="h-6 w-6 rounded overflow-hidden">
-                <Image
-                  src="/logo-black-trans-bacground.svg" // Light theme logo (default)
-                  alt={`${siteConfig.name} Logo`}
-                  width={24}
-                  height={24}
-                  priority
-                />
-              </div>
-            )}
+            {/* Logo - Conditionally set src based on theme after mount */}
+            <div className="h-6 w-6 rounded overflow-hidden">
+              <Image
+                // Default to light logo, switch to dark logo if mounted and theme is dark
+                src={mounted && theme === 'dark' ? "/logo-white-black-bacground.svg" : "/logo-black-trans-bacground.svg"}
+                alt={`${siteConfig.name} Logo`}
+                width={24}
+                height={24}
+                priority
+              />
+            </div>
             <span className="font-bold">{siteConfig.name}</span>
           </MobileLink>
         </div>
@@ -117,7 +106,6 @@ function MobileLink({
       href={href}
       onClick={(e) => { // Add event parameter 'e'
         const hrefString = href.toString();
-        // Removed duplicate line: const hrefString = href.toString();
         const isHomePageAnchor = hrefString.startsWith("/#");
 
         if (isHomePageAnchor) {

@@ -28,13 +28,13 @@ This document outlines the planned steps for developing the portfolio website.
     *   Add biographical content, skills list, etc.
 *   **Projects List Page (`/projects`):**
     *   Create `src/app/projects/page.tsx`.
-    *   Fetch list of projects from Supabase.
+    *   Fetch list of projects using data fetching functions (e.g., `getProjects` from `src/lib/data.ts`).
     *   Implement `ProjectCard` component (`src/components/project-card.tsx`).
     *   Display projects in a grid or list using the `ProjectCard`.
 *   **Project Detail Page (`/projects/[slug]`):**
     *   Create `src/app/projects/[slug]/page.tsx`.
     *   Implement dynamic route handling.
-    *   Fetch specific project data from Supabase based on `slug`.
+    *   Fetch specific project data using data fetching functions (e.g., `getProjectBySlug` from `src/lib/data.ts`) based on `slug`.
     *   Display project title, description, technologies.
     *   Implement logic to render `content_sections` (text and image types).
 *   **Contact Page (`/contact`):**

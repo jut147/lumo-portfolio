@@ -8,6 +8,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { Toaster } from "@/components/ui/sonner" // Import Toaster
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
+import { siteConfig } from "@/config/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,8 +28,8 @@ const archivoBlack = Archivo_Black({
 });
 
 export const metadata: Metadata = {
-  title: "Lumo Studios | Your Web Design Partner", // Updated title
-  description: "Lumo Studios | Your Web Design Partner", // Using config description
+  title: siteConfig.description, // Use config description
+  description: siteConfig.description, // Use config description
   openGraph: {
     images: [
       {
@@ -42,8 +43,8 @@ export const metadata: Metadata = {
   },
   twitter: { // Optional: Add Twitter card metadata
     card: 'summary_large_image',
-    title: "Lumo Studios | Your Web Design Partner",
-    description: "Lumo Studios | Your Web Design Partner",
+    title: siteConfig.description,
+    description: siteConfig.description,
     images: ['https://lumo-kappa.vercel.app/logo-white-black-bacground.svg'], // Must be an absolute URL
   },
 };
@@ -55,7 +56,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <link rel="icon" href="/favicon.ico" sizes="any" />
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased flex flex-col", // Added flex flex-col

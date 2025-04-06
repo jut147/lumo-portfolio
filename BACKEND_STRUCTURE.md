@@ -86,29 +86,25 @@ RLS is utilized within Supabase to enforce data access policies directly at the 
 
 ## Data Access Patterns
 
-*   **Server Components:** Data fetching, particularly for read operations like retrieving project lists or details, primarily occurs within Next.js Server Components. These components execute on the server, allowing them to securely use the `supabaseClient` to interact directly with the database.
+*   **Server Components & Data Fetching Functions:** Data fetching, particularly for read operations like retrieving project lists or details, is primarily handled by dedicated functions within `src/lib/data.ts`. These functions (`getProjects`, `getProjectBySlug`, etc.) encapsulate the logic for interacting with Supabase using `supabaseClient` and perform runtime data validation using Zod schemas defined alongside the functions (based on types in `src/types/project.ts`). Server Components then call these functions to retrieve the validated data.
     ```typescript
-    // Example: Fetching projects in a Server Component
-    // (e.g., src/app/projects/page.tsx or src/app/projects/[slug]/page.tsx)
-    import { supabaseClient } from ''lib/supabaseClient'' (see below for file content);
+    // Example: Using data fetching function in a Server Component
+    // (e.g., src/app/projects/[slug]/page.tsx)
+    import { getProjectBySlug } from '@/lib/data'; // Import the fetching function
+    import { notFound } from 'next/navigation';
 
-    async function ProjectDetails({ params }: { params: { slug: string } }) {
-      const { data: project, error } = await supabaseClient
-        .from('projects')
-        .select('*')
-        .eq('slug', params.slug)
-        .single(); // Assuming slug is unique
+    async function ProjectDetailsPage({ params }: { params: { slug: string } }) {
+      // Call the dedicated function to get validated data
+      const project = await getProjectBySlug(params.slug);
 
-      if (error || !project) {
-        // Handle error or not found case (e.g., show 404)
-        console.error("Error fetching project:", error);
-        // return notFound(); // Example using Next.js notFound
+      if (!project) {
+        notFound(); // Use Next.js notFound utility if project isn't found or validation fails
       }
 
-      // Render project details using the 'project' data
+      // Render project details using the validated 'project' data
       return (
         <div>
-          <h1>{project.title}</h1>
+          <h1>{project.title_client}</h1> {/* Use validated fields */}
           {/* ... rest of the component */}
         </div>
       );
@@ -124,8 +120,8 @@ RLS is utilized within Supabase to enforce data access policies directly at the 
     2.  The form submission invokes a Server Action defined in `src/app/contact/actions.ts`.
     3.  The Server Action function executes exclusively on the server.
     4.  It receives and validates the form data (e.g., using Zod).
-    5.  It uses the `supabaseClient` to perform the necessary database operation (e.g., `INSERT` into `contact_submissions`).
-    6.  It returns a status (success or error) back to the client-side form for user feedback (e.g., displaying a success message or error details).
+    5.  It attempts to process the data. **Note:** As of the last review, the actual submission logic (e.g., saving to a database like `contact_submissions` or sending an email) is currently a placeholder within the action function.
+    6.  It returns a status (success or error) back to the client-side form for user feedback. Due to the placeholder logic, a successful validation currently returns a simulated success message.
 *   **Security:** Server Actions provide a robust security model. Database credentials and sensitive logic remain on the server, preventing exposure to the client. Input validation within the action is crucial.
 
 ## Environment Variables
