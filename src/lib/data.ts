@@ -6,7 +6,7 @@ import { Project } from '@/types/project'; // Import Project type
 export async function getAllProjects(): Promise<Project[]> {
   const { data, error } = await supabase
     .from('projectclayton') // Use correct table name
-    .select('slug, title_client, category, hero_image_url, project_brief_description') // Select relevant fields
+    .select('id, slug, title_client, category, hero_image_url, project_brief_description') // Select relevant fields
     .order('date_completed', { ascending: false, nullsFirst: false }); // Order by date
 
   if (error) {
