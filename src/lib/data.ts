@@ -1,5 +1,5 @@
 import { supabase } from './supabaseClient';
-import { Project, ContentSection } from '@/types/project'; // Import both types
+import { Project } from '@/types/project'; // Import Project type
 
 // Fetch all projects for the listing page
 // Select fields needed for cards from projectclayton

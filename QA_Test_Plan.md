@@ -87,10 +87,15 @@ mindmap
     *   Running the linter (ESLint) to catch code style and potential errors.
     *   Running the TypeScript compiler (`tsc`) to check for type errors.
     *   Executing the production build command (`npm run build`) to confirm it completes without errors (including linting and type checking steps integrated into the build). **This is a critical pre-deployment check.**
+    *   Verifying component imports resolve correctly (no 'Module not found' errors).
+    *   Checking for type errors (`tsc --noEmit` or via build process).
 *   **Unit & Component Testing:** Test individual functions (e.g., utility functions in `src/lib/utils.ts`) and React components in isolation to verify their logic and rendering without needing to run the entire application. Tools like Jest and React Testing Library are suitable.
 *   **Integration Testing:** Focus on the interaction between different parts of the application, such as:
     *   Interactions between multiple components (e.g., form submission triggering a toast notification).
     *   Frontend communication with backend services (e.g., Supabase client integration for the contact form).
+    *   Verifying data fetching logic targets correct database tables and columns.
+    *   Ensuring TypeScript types align with the actual database schema.
+    *   Checking UI behavior and error handling when optional data (e.g., images) is missing.
 *   **End-to-End (E2E) Testing:** Simulate real user scenarios by interacting with the application through the browser. Verify complete user flows (e.g., navigating to the contact page, filling the form, submitting, and seeing a success message). Playwright is recommended.
 *   **Functional Testing:** Manually or exploratorily verify that each feature works according to requirements (e.g., navigation links work, theme changes apply correctly). Both positive and negative test cases will be included.
 *   **Regression Testing:** Execute a subset of automated tests (E2E, Integration, Unit/Component) after code changes or bug fixes to ensure existing functionality remains unaffected.

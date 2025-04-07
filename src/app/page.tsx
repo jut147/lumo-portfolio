@@ -2,7 +2,7 @@
 // import { WavesHero } from "@/components/waves-hero";
 // import { ProjectCard } from "@/components/project-card";
 // import { supabase } from "@/lib/supabaseClient"; // No longer needed here
-import { Project } from "@/types/project"; // Keep type import if HomePageClient needs full type
+// import { Project } from "@/types/project"; // Keep type import if HomePageClient needs full type
 import { HomePageClient } from "@/components/home-page-client"; // Import the client component
 import { getAllProjects } from "@/lib/data"; // Import the corrected data fetching function
 

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import PlaceholderImage from "/public/placeholder-project.svg"; // Import the local SVG
 import { motion } from "framer-motion"; // Add motion import back
 import {
   Card,
@@ -22,7 +23,7 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project }: ProjectCardProps) {
   // Basic placeholder image if none provided
-  const imageUrl = project.thumbnail_url || "https://via.placeholder.com/400x250?text=Project+Image"; // Use project.thumbnail_url
+  const imageUrl = project.thumbnail_url || PlaceholderImage; // Use project.thumbnail_url
 
   return (
     // Wrap the original Card with motion.div for scale/shadow animation
