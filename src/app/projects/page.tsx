@@ -1,5 +1,5 @@
 // Removed supabase import, using lib/data.ts now
-import { Project } from "@/types/project"; // Keep type import
+// import { Project } from "@/types/project"; // Keep type import
 import { ProjectCard } from "@/components/project-card";
 import { getAllProjects } from "@/lib/data"; // Import centralized function
 

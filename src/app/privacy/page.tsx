@@ -6,7 +6,7 @@ export default function PrivacyPolicyPage() {
         {/* Start of new content */}
         <h2>Privacy Policy - Lumo Studios LLC</h2>
         <p><strong>Effective Date:</strong> April 7, 2025</p>
-        <p>Lumo Studios LLC ("Company," "we," "us," or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our services (collectively, the "Service"). Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access the Service.</p>
+        <p>Lumo Studios LLC (&quot;Company,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our services (collectively, the &quot;Service&quot;). Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access the &quot;Service&quot;.</p>
 
         <h3>1. Information Collected</h3>
         <p>We may collect information about you in a variety of ways. The information we may collect via the Service includes:</p>
@@ -74,10 +74,10 @@ export default function PrivacyPolicyPage() {
         <p>Your information, including Personal Data, may be transferred to — and maintained on — computers located outside of your state, province, country, or other governmental jurisdiction where the data protection laws may differ from those of your jurisdiction. As we are based in the United States, if you are located outside the United States and choose to provide information to us, please note that we transfer the data, including Personal Data, to the United States and process it there. Your consent to this Privacy Policy followed by your submission of such information represents your agreement to that transfer. We will take reasonable steps to ensure that your data is treated securely and in accordance with this Privacy Policy.</p>
 
         <h3>9. Children{"'"}s Privacy</h3>
-        <p>Our Service is not intended for use by anyone under the age of 13 ("Children"). We do not knowingly collect personally identifiable information from Children. If you are a parent or guardian and you are aware that your Child has provided us with Personal Data, please contact us. If we become aware that we have collected Personal Data from Children without verification of parental consent, we take steps to remove that information from our servers. This complies with the Children{"'"}s Online Privacy Protection Act (COPPA).</p>
+        <p>Our Service is not intended for use by anyone under the age of 13 (&quot;Children&quot;). We do not knowingly collect personally identifiable information from Children. If you are a parent or guardian and you are aware that your Child has provided us with Personal Data, please contact us. If we become aware that we have collected Personal Data from Children without verification of parental consent, we take steps to remove that information from our servers. This complies with the Children{"'"}s Online Privacy Protection Act (COPPA).</p>
 
         <h3>10. Policy Updates</h3>
-        <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Effective Date" at the top. You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page. For material changes, we may provide more prominent notice (such as by email notification).</p>
+        <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the &quot;Effective Date&quot; at the top. You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page. For material changes, we may provide more prominent notice (such as by email notification).</p>
 
         <h3>11. Contact Information</h3>
         <p>If you have any questions or comments about this Privacy Policy, please contact us at:</p>
