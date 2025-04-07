@@ -1,86 +1,31 @@
 import type { Config } from "tailwindcss";
-import defaultTheme from "tailwindcss/defaultTheme"; // Rename import for clarity
+import defaultTheme from "tailwindcss/defaultTheme";
+import animatePlugin from "tailwindcss-animate"; // Import animate plugin
+import shadcnPreset from "./src/lib/shadcn-preset"; // Import the preset
 
 const config = {
-  darkMode: "class", // Correct darkMode value
+  darkMode: "class",
   content: [
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
 	],
-  prefix: "",
+  presets: [shadcnPreset], // Use the shadcn preset
   theme: {
-    container: {
-      center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
-    },
+    // Container settings are in the preset, remove if duplicating
+    // extend is kept for custom fonts not in the preset
     extend: {
       fontFamily: {
-        sans: ["var(--font-geist-sans)", ...(defaultTheme.fontFamily?.['sans'] || [])], // Access via defaultTheme.fontFamily
-        mono: ["var(--font-geist-mono)", ...(defaultTheme.fontFamily?.['mono'] || [])], // Access via defaultTheme.fontFamily
-        display: ["var(--font-display)", ...(defaultTheme.fontFamily?.['sans'] || [])], // Add display font, fallback to sans
+        sans: ["var(--font-geist-sans)", ...(defaultTheme.fontFamily?.['sans'] || [])],
+        mono: ["var(--font-geist-mono)", ...(defaultTheme.fontFamily?.['mono'] || [])],
+        display: ["var(--font-display)", ...(defaultTheme.fontFamily?.['sans'] || [])],
       },
-      colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-      },
+      // Colors, borderRadius, keyframes, animation are now in the preset
     },
   },
-  plugins: [require("tailwindcss-animate")],
-} satisfies Config
+  // Animate plugin is included in the preset, but can be listed here too
+  plugins: [animatePlugin],
+} satisfies Config;
 
-export default config
+export default config;
