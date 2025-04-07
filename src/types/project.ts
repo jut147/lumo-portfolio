@@ -42,6 +42,7 @@ export interface Project {
 
   // Add 'title' based on usage in components, maybe map from title_client?
   title: string;
+
   // Add 'thumbnail_url' based on usage, map from image_url?
   thumbnail_url?: string | null;
 }

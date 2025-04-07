@@ -1,9 +1,9 @@
-"use client"; // Add directive back
+"use client"; // Ensure directive is present
 
 import Image from "next/image";
 import Link from "next/link";
-import PlaceholderImage from "/public/placeholder-project.svg"; // Import the local SVG
-import { motion } from "framer-motion"; // Add motion import back
+// Removed incorrect SVG import
+import { motion } from "framer-motion";
 import {
   Card,
   CardContent,
@@ -11,59 +11,55 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"; // Auto-imported by shadcn add
-import { Button } from "@/components/ui/button"; // Auto-imported by shadcn add
-import { Project } from "@/types/project";
-import { ExternalLink } from "lucide-react"; // Icon
-// Removed duplicate Link import
+} from "@/components/ui/card";
+import { Project } from "@/types/project"; // Ensure Project type is imported
 
 interface ProjectCardProps {
-  project: Project;
+  project: Project; // Use the imported Project type
 }
 
 export function ProjectCard({ project }: ProjectCardProps) {
-  // Basic placeholder image if none provided
-  const imageUrl = project.thumbnail_url || PlaceholderImage; // Use project.thumbnail_url
+  // Use the direct path string for the fallback SVG in /public
+  const imageUrl = project.hero_image_url || "/placeholder-project.svg";
 
   return (
-    // Wrap the original Card with motion.div for scale/shadow animation
     <motion.div
-      className="h-full hover:shadow-lg" // Apply hover shadow here, keep h-full
+      className="h-full hover:shadow-lg"
       whileHover={{ scale: 1.03 }}
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      transition={{ duration: 0.2 }}
     >
-      {/* Wrap the Card with Next.js Link */}
-      <Link href={`/projects/${project.slug}`} className="block h-full">
-        <Card className="flex h-full flex-col overflow-hidden"> {/* Keep original Card structure */}
-          <CardHeader>
-            <div className="relative mb-4 h-48 w-full"> {/* Keep image container simple for now */}
-            <Image
-              src={imageUrl}
-              alt={project.title}
-              fill
-              style={{ objectFit: 'cover' }}
-              className="rounded-t-lg"
-            />
-          </div>
-          <CardTitle>{project.title}</CardTitle>
-        {project.project_brief_description && (
-          <CardDescription className="line-clamp-3"> {/* Limit description lines */}
-            {project.project_brief_description}
-          </CardDescription>
-        )}
-      </CardHeader>
-      <CardContent className="flex-grow"></CardContent> {/* Pushes footer down */}
-      <CardFooter>
-        {project.project_link && (
-          <Button asChild variant="outline" size="sm">
-            <Link href={project.project_link} target="_blank" rel="noopener noreferrer">
-              View Project <ExternalLink className="ml-2 h-4 w-4" />
-            </Link>
-          </Button>
-          )}
-        </CardFooter>
-        </Card> {/* Close the original Card */}
-      </Link> {/* Close the Link */}
-    </motion.div> // Close the wrapping motion.div
+      <Card className="flex h-full flex-col overflow-hidden transition-shadow duration-300 ease-in-out">
+        <Link href={`/projects/${project.slug}`} className="block group">
+          <CardHeader className="p-0">
+            <div className="relative h-48 w-full overflow-hidden"> {/* Fixed height */}
+              <Image
+                src={imageUrl}
+                alt={project.title_client || "Project image"} // Use project.title
+                fill // Use fill instead of layout/objectFit
+                className="object-cover transition-transform duration-300 group-hover:scale-105" // Add object-cover
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Add sizes prop
+              />
+            </div>
+          </CardHeader>
+          <CardContent className="flex-grow p-4">
+            <CardTitle className="mb-1 text-lg font-semibold group-hover:text-primary">
+              {project.title_client} {/* Display title */}
+            </CardTitle>
+            {/* Use project_brief_description if available */}
+            {project.project_brief_description && (
+              <CardDescription className="text-sm text-muted-foreground line-clamp-2">
+                {project.project_brief_description}
+              </CardDescription>
+            )}
+          </CardContent>
+          <CardFooter className="p-4 pt-0">
+            {/* Optional: Add category or tags here */}
+            {project.category && (
+              <span className="text-xs text-muted-foreground">{project.category}</span>
+            )}
+          </CardFooter>
+        </Link>
+      </Card>
+    </motion.div>
   );
 }

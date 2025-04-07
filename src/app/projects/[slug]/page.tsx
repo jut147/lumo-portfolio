@@ -32,7 +32,7 @@ export default async function ProjectPage({ params }: { params: { slug: string }
       {/* 1. Hero Image */}
       {project.hero_image_url && (
         <div className="relative mb-8 h-64 md:h-96 w-full overflow-hidden rounded-lg">
-          <Image src={project.hero_image_url} alt={`${project.title || 'Project'} Hero Image`} fill priority className="object-cover" />
+          <Image src={project.hero_image_url} alt={`${project.title_client || 'Project'} Hero Image`} fill priority className="object-cover" />
         </div>
       )}
 
@@ -55,7 +55,7 @@ export default async function ProjectPage({ params }: { params: { slug: string }
       </div>
 
       {/* 3. Project Brief */}
-      <h1 className="mb-2 text-3xl md:text-5xl font-bold">{project.title || project.title_client}</h1>
+      <h1 className="mb-2 text-3xl md:text-5xl font-bold">{project.title_client}</h1>
       {project.project_brief_description && <p className="mb-8 text-lg text-muted-foreground">{project.project_brief_description}</p>}
 
       {/* 4. Tech Stack */}
