@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { useTheme } from "next-themes"; // Import useTheme
+// Removed useTheme import - no longer needed for placeholder logic
 import { Badge } from "@/components/ui/badge"; // Import Badge component
 import {
   Card,
@@ -20,15 +20,7 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project }: ProjectCardProps) {
-  const { theme } = useTheme(); // Get current theme
-
-  // Determine fallback image based on theme
-  const fallbackImageUrl = theme === 'dark'
-    ? "/placeholder-project-dark.svg"
-    : "/placeholder-project.svg";
-
-  // Use project image if available, otherwise use theme-appropriate fallback
-  const imageUrl = project.hero_image_url || fallbackImageUrl;
+  // Removed theme logic - CSS will handle placeholder visibility
 
   return (
     <motion.div
@@ -40,13 +32,34 @@ export function ProjectCard({ project }: ProjectCardProps) {
         <Link href={`/projects/${project.slug}`} className="block group">
           <CardHeader className="p-0">
             <div className="relative h-48 w-full overflow-hidden">
-              <Image
-                src={imageUrl} // Use the determined imageUrl
-                alt={project.title_client || "Project image"} // Use title_client
-                fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              />
+              {project.hero_image_url ? (
+                <Image
+                  src={project.hero_image_url} // Use actual image if available
+                  alt={project.title_client || "Project image"}
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+              ) : (
+                <>
+                  {/* Light mode placeholder */}
+                  <Image
+                    src="/placeholder-project.svg"
+                    alt="Project placeholder"
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105 block dark:hidden" // Show in light, hide in dark
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                  {/* Dark mode placeholder */}
+                  <Image
+                    src="/placeholder-project-dark.svg"
+                    alt="Project placeholder"
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105 hidden dark:block" // Hide in light, show in dark
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                </>
+              )}
             </div>
           </CardHeader>
           <CardContent className="flex-grow p-4">
