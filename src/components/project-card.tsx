@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button"; // Auto-imported by shadcn add
 import { Project } from "@/types/project";
 import { ExternalLink } from "lucide-react"; // Icon
+// Removed duplicate Link import
 
 interface ProjectCardProps {
   project: Project;
@@ -21,7 +22,7 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project }: ProjectCardProps) {
   // Basic placeholder image if none provided
-  const imageUrl = project.image || "https://via.placeholder.com/400x250?text=Project+Image"; // Use project.image
+  const imageUrl = project.thumbnail_url || "https://via.placeholder.com/400x250?text=Project+Image"; // Use project.thumbnail_url
 
   return (
     // Wrap the original Card with motion.div for scale/shadow animation
@@ -30,9 +31,11 @@ export function ProjectCard({ project }: ProjectCardProps) {
       whileHover={{ scale: 1.03 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
-      <Card className="flex h-full flex-col overflow-hidden"> {/* Keep original Card structure */}
-        <CardHeader>
-          <div className="relative mb-4 h-48 w-full"> {/* Keep image container simple for now */}
+      {/* Wrap the Card with Next.js Link */}
+      <Link href={`/projects/${project.slug}`} className="block h-full">
+        <Card className="flex h-full flex-col overflow-hidden"> {/* Keep original Card structure */}
+          <CardHeader>
+            <div className="relative mb-4 h-48 w-full"> {/* Keep image container simple for now */}
             <Image
               src={imageUrl}
               alt={project.title}
@@ -42,9 +45,9 @@ export function ProjectCard({ project }: ProjectCardProps) {
             />
           </div>
           <CardTitle>{project.title}</CardTitle>
-        {project.description && (
+        {project.project_brief_description && (
           <CardDescription className="line-clamp-3"> {/* Limit description lines */}
-            {project.description}
+            {project.project_brief_description}
           </CardDescription>
         )}
       </CardHeader>
@@ -56,9 +59,10 @@ export function ProjectCard({ project }: ProjectCardProps) {
               View Project <ExternalLink className="ml-2 h-4 w-4" />
             </Link>
           </Button>
-        )}
-      </CardFooter>
-      </Card> {/* Close the original Card */}
+          )}
+        </CardFooter>
+        </Card> {/* Close the original Card */}
+      </Link> {/* Close the Link */}
     </motion.div> // Close the wrapping motion.div
   );
 }
