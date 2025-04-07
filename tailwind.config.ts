@@ -1,6 +1,5 @@
 import type { Config } from "tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
-import animatePlugin from "tailwindcss-animate"; // Import animate plugin
 import shadcnPreset from "./src/lib/shadcn-preset"; // Import the preset
 
 const config = {
@@ -25,7 +24,7 @@ const config = {
     },
   },
   // Animate plugin is included in the preset, but can be listed here too
-  plugins: [animatePlugin],
+  plugins: [],
 } satisfies Config;
 
 export default config;

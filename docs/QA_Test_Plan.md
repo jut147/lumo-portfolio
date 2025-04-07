@@ -11,7 +11,7 @@ This document outlines the Quality Assurance (QA) Test Plan and Strategy for the
 
 Based on the project structure, the application is a Next.js/React-based portfolio website. Key components identified include:
 
-*   **Pages:** Home (`/`), About (`/about`), Contact (`/contact`).
+*   **Pages:** Home (`/`), About (`/about`), Contact (`/contact`), Projects list (`/projects`), Project detail (`/projects/[slug]`), Terms (`/terms`), Privacy (`/privacy`).
 *   **Layout:** Main application layout (`src/app/layout.tsx`).
 *   **Core Components:** Header, Footer (`site-footer.tsx`, `ui/footer.tsx`), Project Card, Theme Provider, Waves Hero/Background.
 *   **UI Elements:** Buttons, Cards, Forms (Input, Label, Textarea), Navigation Menu, Theme Toggle, Toasts (`sonner.tsx`).
@@ -154,9 +154,13 @@ mindmap
     *   Browser back/forward button functionality.
 *   **Content Display:**
     *   Home page content (Hero section, Project list).
-    *   About page content.
-    *   Contact page content (Form, contact info).
-    *   Project Card details rendering.
+    *   About page content (`/about`).
+    *   Contact page content (`/contact`) (Form, contact info).
+    *   Projects list page content (`/projects`).
+    *   Project detail page content (`/projects/[slug]`).
+    *   Terms page content (`/terms`).
+    *   Privacy page content (`/privacy`).
+    *   Project Card details rendering (on Home and Projects pages).
 *   **Contact Form:**
     *   Input field validation (name, email, message).
     *   Successful form submission (integration with Supabase).

@@ -17,17 +17,20 @@ This repository contains the source code for my personal portfolio website, buil
 *   **Styling:** [Tailwind CSS](https://tailwindcss.com/)
 *   **UI Components:** [Shadcn/ui](https://ui.shadcn.com/)
 *   **Backend/DB (Optional):** [Supabase](https://supabase.io/) (Used for contact form or other features)
-*   **Testing:** [Playwright](https://playwright.dev/) (E2E), [Jest](https://jestjs.io/) (Unit/Integration - *as per project goals*)
+*   **Testing:** [Playwright](https://playwright.dev/) (E2E)
 *   **Linting:** [ESLint](https://eslint.org/)
 *   **Deployment/Analytics:** [Vercel](https://vercel.com/)
 
 ## Features
 
-*   Responsive design
-*   Homepage showcasing projects
-*   About Me section
-*   Contact Form (potentially using Supabase)
-*   Project detail display (`/projects/[slug]` - *assuming*)
+*   Responsive design across devices
+*   Homepage (`/`) showcasing featured projects
+*   Projects list page (`/projects`)
+*   Individual project detail page (`/projects/[slug]`)
+*   About Me page (`/about`)
+*   Contact Form (`/contact`) integrated with Supabase
+*   Terms of Service page (`/terms`)
+*   Privacy Policy page (`/privacy`)
 *   Light/Dark mode theme toggle
 
 ## Getting Started
@@ -75,7 +78,7 @@ This project uses Supabase for certain features. You'll need to set up your envi
 Start the development server:
 
 ```bash
-npm run dev
+next dev --turbopack
 # or
 # yarn dev
 # or
@@ -90,13 +93,6 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to see the a
     ```bash
     npx playwright test
     ```
-*   **Unit/Integration Tests:** Run Jest tests (Setup might be required based on project goals):
-    ```bash
-    npm test
-    # or
-    # yarn test
-    ```
-
 ## Deployment
 
 This application is typically deployed using platforms like [Vercel](https://vercel.com/) or [Netlify](https://www.netlify.com/). Connect your Git repository to the platform for automatic deployments on push/merge. Ensure environment variables are configured in the deployment platform's settings.

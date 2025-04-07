@@ -55,9 +55,9 @@ export default function ContactPage() {
 
   return (
     // Use direct padding and max-width, significantly increased vertical padding
-    <div className="px-4 lg:px-8 pt-20 pb-16 max-w-screen-2xl mx-auto"> {/* Further Increased py */}
-      <h1 className="mb-12 md:mb-16 text-center text-4xl font-bold">Contact Us</h1> {/* Further Increased mb */}
-      <p className="mb-16 md:mb-20 text-center text-lg text-muted-foreground"> {/* Further Increased mb */}
+    <div className="px-4 lg:px-8 pt-20 pb-16 max-w-screen-lg mx-auto"> {/* Standardized max-width */}
+      <h1 className="mb-8 md:mb-12 text-center text-4xl font-bold">Contact Us</h1> {/* Standardized mb */}
+      <p className="mb-8 md:mb-12 text-center text-lg text-muted-foreground"> {/* Standardized mb */}
         Have a question or want to work together? Send us a message!
       </p>
 
