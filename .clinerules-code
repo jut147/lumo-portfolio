@@ -1,0 +1,96 @@
+# Roo-Cline Project Rules (.clinerules-code)
+
+## 1. Introduction
+
+This document outlines the specific rules and guidelines for me, Roo (AI assistant), when working on this portfolio website project via Cline. The purpose is to ensure consistent, effective, and safe collaboration aligned with the project&apos;s standards. These rules supersede any conflicting general instructions I might have.
+
+## 2. Core Principle: Accuracy, Safety, and Context
+
+*   **Accuracy First:** Prioritize correctness in code, configuration, and documentation updates. Verify assumptions against the codebase and provided documentation.
+*   **Safety:** Avoid destructive operations without explicit confirmation. Handle sensitive information (API keys, secrets) securely, never exposing it in code or responses.
+*   **Context is Key:** Base actions on project-specific documentation, existing code patterns, and explicit user instructions over general knowledge.
+
+## 3. Information Sources &amp; Priority
+
+Consult information in this order:
+
+1.  **Project Documentation (primarily in `docs/` folder):**
+    *   `README.md` (Project Overview - in root)
+    *   `docs/TECH_STACK.md` (Technology Stack)
+    *   `docs/QA_Test_Plan.md` (QA Strategy &amp; Plan)
+    *   `docs/CONTRIBUTING.md` (Contribution Guidelines)
+    *   `docs/CODE_OF_CONDUCT.md` (Code of Conduct)
+    *   `docs/plan.md` (Initial Project Plan - may be outdated)
+    *   *(If created)* `PRD.md`, `APP_FLOW.md`, `FRONTEND_GUIDELINES.md`, `BACKEND_STRUCTURE.md`, `PROJECT_RULES.md`
+2.  **Codebase:** Existing patterns, comments, type definitions (`src/types`), configurations (`tailwind.config.ts`, `tsconfig.json`, `next.config.ts`, etc.).
+3.  **User Instructions:** Explicit directions given in the current task prompt.
+4.  **General Knowledge:** Apply only when project-specific information is lacking, ensuring alignment with project context.
+
+## 4. Code Generation &amp; Modification
+
+*   **Adhere to Stack:** Generate code compatible with Next.js 15 (App Router), React 19, Tailwind CSS v4, shadcn/ui, TypeScript, and Supabase.
+*   **Follow Patterns:** Respect existing code structure, component patterns, and data fetching methods (`src/lib/data.ts`).
+*   **TypeScript:** Maintain strict mode compliance. Use defined types from `src/types` where applicable. Ensure new code is strongly typed. Avoid `any` unless absolutely necessary as a temporary diagnostic step, and always aim to replace it with a proper type.
+*   **Styling:** Use Tailwind CSS utility classes primarily. Leverage `shadcn/ui` components and variants where appropriate. Follow the configuration in `tailwind.config.ts` and `src/lib/shadcn-preset.ts`.
+*   **File Modifications:**
+    *   Use the most appropriate tool (`apply_diff`, `search_and_replace`, `insert_content`). State the tool and target file clearly.
+    *   For `apply_diff`, ensure the `SEARCH` block is an *exact* match, including whitespace and line endings.
+    *   For `write_to_file`, **always provide the complete, final file content.** Do not use placeholders or omit sections. Double-check JSX syntax for encoding issues (`&amp;&amp;` vs `&amp;amp;&amp;amp;`). If `write_to_file` fails repeatedly or corrupts syntax, request manual user intervention for that specific file change.
+*   **Clarity:** Write readable, maintainable code with clear comments for complex logic.
+
+## 5. Tool Usage
+
+*   **One Tool Per Message:** Use only one tool call per response message.
+*   **Wait for Confirmation:** Always wait for the user&apos;s response confirming the success or failure of a tool use before proceeding. Do not assume success.
+*   **Prefer Specific Tools:** Use `list_files`, `read_file`, `apply_diff`, etc., over generic `execute_command` for file operations when possible.
+*   **Command Execution (`execute_command`):**
+    *   Explain the command&apos;s purpose and expected outcome clearly *before* requesting execution.
+    *   Use `git mv` for moving/renaming tracked files.
+    *   Quote or escape file paths with special characters (like `[`, `]`) for shell compatibility.
+    *   Prefer non-interactive commands where possible.
+*   **Asking Questions (`ask_followup_question`):**
+    *   Use sparingly – only when essential information is missing and cannot be found or inferred.
+    *   Ask clear, specific questions.
+    *   Provide 2-4 actionable, distinct suggestions as potential answers.
+*   **MCP Tools:** Use MCP tools one at a time, respecting their specific schemas and purposes.
+
+## 6. Communication
+
+*   **Be Direct &amp; Technical:** Avoid conversational filler. Focus on accuracy.
+*   **State Intent:** Clearly state the action being taken (e.g., "Reading file X", "Applying fix to Y").
+*   **Summarize Completion (`attempt_completion`):** Provide a concise summary of the completed task and affected files. Acknowledge any unresolved issues.
+
+## 7. Testing
+
+*   **Consult `docs/QA_Test_Plan.md`:** Refer to the plan for testing strategies.
+*   **Verify Fixes:** After applying fixes, attempt to verify them (e.g., run `npm run build`, check page in browser via Puppeteer if applicable).
+*   **Suggest Tests:** Consider suggesting relevant tests (E2E, unit) for new features or significant changes.
+
+## 8. Security
+
+*   **No Secrets:** Never include secrets (API keys, passwords) in code or responses.
+*   **Input Validation:** Assume user input requires validation, especially for Server Actions or API routes (if implemented).
+*   **Supabase RLS:** Be mindful of potential Row Level Security policies when constructing Supabase queries.
+
+## 9. Scope Management
+
+*   **Focus:** Adhere strictly to the current task scope defined by the user.
+*   **No Unrelated Changes:** Avoid unrelated refactoring or feature additions unless explicitly requested. Suggest improvements separately.
+
+## 10. Relevant Documentation Locations
+
+*   **Project Root:** `README.md`, `LICENSE`
+*   **`docs/` Folder:** `TECH_STACK.md`, `QA_Test_Plan.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `plan.md`
+
+## 11. Relevant MCP Servers
+
+*(List based on current connection information)*
+
+*   `npm-docs` (`node /Users/jt/Documents/Cline/MCP/npm-docs-server/build/index.js`)
+*   `perplexity-server` (`node /Users/jt/Documents/ Cline/MCP/mcp-perplexity-server/build/index.js`) - *Note: Encountered API errors previously.*
+*   `github.com/alexander-zuev/supabase-mcp-server` (`/Users/jt/.local/bin/supabase-mcp-server`)
+*   `github.com/stripe/agent-toolkit` (`npx -y @stripe/mcp ...`)
+*   `github.com/Garoth/sendgrid-mcp` (`node /Users/jt/Documents/Cline/MCP/github.com/Garoth/sendgrid-mcp/build/index.js`)
+*   `github.com/AgentDeskAI/browser-tools-mcp` (`npx @agentdeskai/browser-tools-mcp@latest`) - *Note: Encountered connection errors previously.*
+*   `github.com/modelcontextprotocol/servers/tree/main/src/brave-search` (`npx -y @modelcontextprotocol/server-brave-search`)
+*   `github.com/modelcontextprotocol/servers/tree/main/src/puppeteer` (`npx -y @modelcontextprotocol/server-puppeteer`)
