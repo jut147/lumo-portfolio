@@ -11,7 +11,7 @@ export const siteConfig = {
     },
     {
       title: "Projects",
-      href: "/#projects-section", // Link to homepage anchor
+      href: "/projects", // Link to projects page
     },
     {
       title: "About",
