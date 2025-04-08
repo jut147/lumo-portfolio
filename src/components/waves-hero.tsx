@@ -48,13 +48,13 @@ export function WavesHero({ className }: WavesHeroProps) { // Destructure classN
         {/* Scroll Down Icon (Mobile) - Moved INSIDE content overlay, below text */}
         <button
           onClick={() => {
-          const projectsSection = document.getElementById("projects-section");
-          if (projectsSection) {
-            projectsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+          const processSection = document.getElementById("process-section"); // Target process-section
+          if (processSection) {
+            processSection.scrollIntoView({ behavior: "smooth", block: "start" });
           }
         }}
         className="mt-12 block md:hidden cursor-pointer text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors duration-300 animate-bounce" // Mobile: Relative position below text, bounce
-        aria-label="Scroll down to projects"
+        aria-label="Scroll down to process" // Updated aria-label
       >
         <ChevronDown className="h-10 w-10 stroke-width-[1.5]" /> {/* Use ChevronDown */}
       </button>
@@ -63,13 +63,13 @@ export function WavesHero({ className }: WavesHeroProps) { // Destructure classN
     {/* Scroll Down Icon (Desktop) - Remains outside, absolutely positioned */}
     <button
         onClick={() => {
-          const projectsSection = document.getElementById("projects-section");
-          if (projectsSection) {
-            projectsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+          const processSection = document.getElementById("process-section"); // Target process-section
+          if (processSection) {
+            processSection.scrollIntoView({ behavior: "smooth", block: "start" });
           }
         }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden md:block cursor-pointer text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors duration-300 animate-bounce" // Desktop: Absolute, bounce
-        aria-label="Scroll down to projects"
+        aria-label="Scroll down to process" // Updated aria-label
       >
         <ChevronDown className="h-10 w-10 stroke-width-[1.5]" /> {/* Kept ChevronDown */}
       </button>

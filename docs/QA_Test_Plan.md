@@ -97,10 +97,10 @@ mindmap
     *   Ensuring TypeScript types align with the actual database schema.
     *   Checking UI behavior and error handling when optional data (e.g., images) is missing.
 *   **End-to-End (E2E) Testing:** Simulate real user scenarios by interacting with the application through the browser. Verify complete user flows (e.g., navigating to the contact page, filling the form, submitting, and seeing a success message). Playwright is recommended.
-*   **Functional Testing:** Manually or exploratorily verify that each feature works according to requirements (e.g., navigation links work, theme changes apply correctly). Both positive and negative test cases will be included.
+*   **Functional Testing:** Manually or exploratorily verify that each feature works according to requirements (e.g., navigation links work, theme changes apply correctly, scroll-triggered animations activate as expected). Both positive and negative test cases will be included.
 *   **Regression Testing:** Execute a subset of automated tests (E2E, Integration, Unit/Component) after code changes or bug fixes to ensure existing functionality remains unaffected.
-*   **Usability Testing:** Evaluate the ease of use, intuitiveness, and overall user experience of the website. This can involve heuristic evaluation or user feedback sessions.
-*   **Compatibility Testing:** Ensure the website renders and functions correctly across different browsers, operating systems, and device types (responsive design).
+*   **Usability Testing:** Evaluate the ease of use, intuitiveness, and overall user experience of the website, including the impact and feel of animations. This can involve heuristic evaluation or user feedback sessions.
+*   **Compatibility Testing:** Ensure the website renders and functions correctly across different browsers, operating systems, and device types (responsive design). Verify animation consistency and performance across environments.
     *   **Target Browsers:** Latest versions of Chrome, Firefox, Safari, Edge.
     *   **Target Devices:** Desktop (various resolutions), Mobile (iOS Safari, Android Chrome), Tablet.
 *   **Performance Testing:** Assess the website's responsiveness, load times, stability, and resource utilization under various conditions.
@@ -109,7 +109,7 @@ mindmap
         *   **Load Times:** Analyze Page Load Time (PLT), Time to First Byte (TTFB), and First Contentful Paint (FCP). Identify bottlenecks in resource loading (CSS, JS, images, fonts).
         *   **Bundle Size Analysis:** Use tools like `@next/bundle-analyzer` to inspect JavaScript bundle sizes. Identify opportunities for code splitting, tree shaking, and reducing dependencies to minimize initial load JS.
         *   **Image Optimization:** Verify that images are appropriately sized, compressed, and served in modern formats (e.g., WebP, AVIF) using Next.js Image component (`next/image`) effectively. Check for lazy loading implementation.
-        *   **Rendering Performance:** Analyze rendering times for both Server Components and Client Components in Next.js. Profile React component rendering if specific components seem slow.
+        *   **Rendering Performance:** Analyze rendering times for both Server Components and Client Components in Next.js. Profile React component rendering if specific components seem slow. Assess animation smoothness (e.g., using browser DevTools performance profiling) and impact on CLS.
         *   **Caching:** Verify browser caching headers are set correctly for static assets.
     *   **Backend/Integration Performance (if applicable):**
         *   **API Response Times:** Measure the time taken for the Supabase client to handle operations, particularly the contact form submission.
@@ -177,6 +177,7 @@ mindmap
     *   Waves background rendering and behavior.
     *   Logo display.
     *   General UI consistency.
+    *   Scroll-triggered animations (Process section, Projects section, Timeline items): Verify activation, smoothness, and timing.
 *   **(Optional) Unit/Component Tests:** Execution and passing of existing unit/component tests.
 
 ### 4.2 Out-of-Scope Features (Assumed)

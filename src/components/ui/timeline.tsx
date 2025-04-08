@@ -3,7 +3,7 @@ import type { VariantProps } from 'class-variance-authority'
 import { cva } from 'class-variance-authority'
 import { Check, Circle, X } from 'lucide-react'
 
-import { cn } from '@/lib/utils' // Corrected import path
+import { cn } from '@/lib/utils' // Adjusted import path
 
 const timelineVariants = cva('grid', {
    variants: {
@@ -40,7 +40,9 @@ Timeline.displayName = 'Timeline'
 const timelineItemVariants = cva('grid items-center gap-x-2', {
    variants: {
       status: {
-         done: 'text-primary',
+         done: 'text-primary', // Use theme primary color for done
+         current: 'text-primary', // Use theme primary color for current
+         error: 'text-destructive', // Use theme destructive color for error
          default: 'text-muted-foreground',
       },
    },
@@ -72,9 +74,9 @@ const timelineDotVariants = cva(
             default: '[&>*]:hidden',
             current:
           '[&>*:not(.lucide-circle)]:hidden [&>.lucide-circle]:fill-current [&>.lucide-circle]:text-current',
-            done: 'bg-primary [&>*:not(.lucide-check)]:hidden [&>.lucide-check]:text-background',
+            done: 'bg-primary [&>*:not(.lucide-check)]:hidden [&>.lucide-check]:text-background', // Use theme colors
             error:
-          'border-destructive bg-destructive [&>*:not(.lucide-x)]:hidden [&>.lucide-x]:text-background',
+          'border-destructive bg-destructive [&>*:not(.lucide-x)]:hidden [&>.lucide-x]:text-background', // Use theme colors
             custom: '[&>*:not(:nth-child(4))]:hidden [&>*:nth-child(4)]:block',
          },
       },
@@ -108,7 +110,7 @@ const TimelineDot = React.forwardRef<HTMLDivElement, TimelineDotProps>(
 TimelineDot.displayName = 'TimelineDot'
 
 const timelineContentVariants = cva(
-   'row-start-2 row-end-2 pb-8 text-muted-foreground max-w-prose', // Added max-w-prose
+   'row-start-2 row-end-2 pb-8 text-muted-foreground', // Keep text-muted-foreground for default content color
    {
       variants: {
          side: {
@@ -146,7 +148,8 @@ const timelineHeadingVariants = cva(
             left: 'col-start-1 col-end-2 ml-auto text-right',
          },
          variant: {
-            primary: 'text-base font-medium text-primary',
+            // Adjust heading colors based on item status if needed, or keep consistent
+            primary: 'text-base font-medium text-foreground', // Use foreground for primary heading
             secondary: 'text-sm font-light text-muted-foreground',
          },
       },
@@ -187,7 +190,7 @@ const TimelineLine = React.forwardRef<HTMLHRElement, TimelineLineProps>(
             aria-orientation="vertical"
             className={cn(
                'col-start-2 col-end-3 row-start-2 row-end-2 mx-auto flex h-full min-h-16 w-0.5 justify-center rounded-full',
-               done ? 'bg-primary' : 'bg-muted',
+               done ? 'bg-primary' : 'bg-border', // Use border color for default line
                className,
             )}
             ref={ref}
