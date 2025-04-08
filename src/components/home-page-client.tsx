@@ -102,12 +102,9 @@ export function HomePageClient({ projects }: HomePageClientProps) {
               dotStatus = "done";
               lineDone = true;
             }
-            if (index === 1) { // Second item (Design) has error dot
-              // Note: The screenshot shows a red 'X' which corresponds to 'error' status in the component
-              // Let's correct the dotStatus here to 'error' as intended previously.
-              dotStatus = "error";
-              // Keep itemStatus as 'done' or 'default' for text color, let's use default
-              itemStatus = "default";
+            if (index === 1) { // Second item (Design) should be 'done' like the first
+              dotStatus = "done"; // Changed from 'error' to 'done'
+              itemStatus = "done"; // Also set itemStatus to 'done' for consistency
             }
             if (index === 2) { // Third item (Code) is current
               itemStatus = "current";
