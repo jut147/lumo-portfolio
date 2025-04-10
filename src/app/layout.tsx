@@ -72,10 +72,10 @@ export default function RootLayout({
          >
            {/* Ensure body or an outer wrapper enables flex column layout if needed */}
            <Header />
-           {/* Wrap main content with max-width container */}
-           <main className="flex-1 w-full"> {/* Removed width constraint */}
+           {/* Render children directly, pages will handle their own constraints */}
+           <div className="flex-1 w-full"> {/* Use a simple div for flex-1 */}
              {children}
-           </main>
+           </div>
            <SiteFooter />
            <Toaster />
         </ThemeProvider>

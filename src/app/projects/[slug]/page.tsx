@@ -56,7 +56,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           {/* Narrative Section 1 */}
           {project.brief_block1_title && project.brief_block1_text && (
             <div>
-              <h2 className="mb-4 text-2xl md:text-3xl font-semibold">{project.brief_block1_title}</h2>
+              <h2 className="mb-4 text-xl md:text-2xl font-semibold">{project.brief_block1_title}</h2>
               <div className="prose prose-lg dark:prose-invert max-w-none">
                 <p>{project.brief_block1_text}</p>
               </div>
@@ -66,7 +66,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           {/* Narrative Section 2 */}
           {project.brief_block2_title && project.brief_block2_text && (
             <div>
-              <h2 className="mb-4 text-2xl md:text-3xl font-semibold">{project.brief_block2_title}</h2>
+              <h2 className="mb-4 text-xl md:text-2xl font-semibold">{project.brief_block2_title}</h2>
               <div className="prose prose-lg dark:prose-invert max-w-none">
                 <p>{project.brief_block2_text}</p>
               </div>
@@ -151,7 +151,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       {/* --- Gallery Section (Below Grid) --- */}
       {bentoGalleryItems.length > 0 ? (
         <div className="my-16">
-          <h2 className="mb-8 text-2xl md:text-3xl font-semibold text-center">Visual Showcase</h2>
+          <h2 className="mb-8 text-xl md:text-2xl font-semibold text-center">Visual Showcase</h2>
           <InteractiveBentoGallery
             mediaItems={bentoGalleryItems}
           />
@@ -160,7 +160,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
       {/* --- CTA Section --- */}
       <div className="text-center mt-16">
-        <h2 className="text-2xl md:text-3xl font-bold mb-6">Interested in a similar project?</h2>
+        <h2 className="text-xl md:text-2xl font-bold mb-6">Interested in a similar project?</h2>
         <Button asChild size="lg">
           <Link href="/contact">Get In Touch</Link>
         </Button>

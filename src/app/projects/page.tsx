@@ -10,7 +10,7 @@ export default async function ProjectsPage() {
 
   return (
     // Removed max-w and mx-auto, kept padding
-    <div className="pt-20 pb-16">
+    <div className="pt-20 pb-16 max-w-6xl mx-auto px-4">
       <h1 className="mb-12 md:mb-16 text-center text-4xl font-bold">My Projects</h1> {/* Increased mb */}
 
       {projects.length > 0 ? (

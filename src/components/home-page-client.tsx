@@ -60,14 +60,16 @@ export function HomePageClient({ children }: HomePageClientProps) { // Destructu
   };
   return (
     <div>
-      <WavesHero className="mb-16" /> {/* Added margin-bottom */}
+      <WavesHero className="mb-16" /> {/* Removed negative margin */}
 
-      {/* Our Process Section */}
+      {/* Container for constrained content */}
+      <div className="max-w-6xl mx-auto px-4">
+        {/* Our Process Section */}
       {/* Wrap section with motion.section for scroll-triggered animation and add ID */}
       <motion.section
         id="process-section" // Added ID for linking
         // Removed px, max-w, mx-auto. Kept py and mb.
-        className="py-16 md:py-24 mb-16 max-w-6xl mx-auto px-4"
+        className="py-16 md:py-24 mb-16"
         initial={{ opacity: 0, y: 50 }} // Start invisible and 50px down
         whileInView={{ opacity: 1, y: 0 }} // Animate to visible and original position
         viewport={{ once: true, amount: 0.2 }} // Trigger once when 20% is visible
@@ -127,7 +129,7 @@ export function HomePageClient({ children }: HomePageClientProps) { // Destructu
       <motion.div
         id="projects-section"
         // Removed px, max-w, mx-auto. Kept py and mb.
-        className="py-16 md:py-24 mb-16 max-w-6xl mx-auto px-4"
+        className="py-16 md:py-24 mb-16"
         initial={{ opacity: 0, y: 50 }} // Start invisible and 50px down
         whileInView={{ opacity: 1, y: 0 }} // Animate to visible and original position
         viewport={{ once: true, amount: 0.1 }} // Trigger once when 10% is visible (adjust amount if needed)
@@ -136,6 +138,7 @@ export function HomePageClient({ children }: HomePageClientProps) { // Destructu
         {/* Render children (which includes Suspense and ProjectGrid) */}
         {children}
       </motion.div>
+      </div> {/* Close constrained content container */}
     </div>
   );
 }
