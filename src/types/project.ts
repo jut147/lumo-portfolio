@@ -5,6 +5,16 @@ export interface ContentSection {
   alt?: string; // For type 'image'
 }
 
+// Type for the Interactive Bento Gallery items
+export interface MediaItemType {
+  id: number | string; // Allow string IDs from project data
+  type: 'image' | 'video';
+  title: string;
+  desc: string;
+  url: string;
+  span: string; // Tailwind classes for grid span (e.g., 'md:col-span-2 md:row-span-2')
+}
+
 export interface Project {
   id: string; // uuid
   title_client?: string | null; // text
@@ -29,6 +39,7 @@ export interface Project {
   brief_block2_text?: string | null; // text
   brief_block2_image?: string | null; // text (URL?)
   brief_block3_title?: string | null; // text
+  bento_gallery_items?: MediaItemType[] | null; // jsonb - For InteractiveBentoGallery
   brief_block3_text?: string | null; // text
   brief_block3_image?: string | null; // text (URL?)
   brief_block4_title?: string | null; // text

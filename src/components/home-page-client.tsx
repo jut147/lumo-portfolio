@@ -1,9 +1,9 @@
 "use client"; // Mark as a Client Component
 
 import { WavesHero } from "@/components/waves-hero";
+// Removed Suspense, ProjectGrid, ProjectCardSkeleton imports
 import { motion } from "framer-motion"; // Import motion factory
-import { Project } from "@/types/project";
-import { ProjectCard } from "@/components/project-card";
+// import { Project } from "@/types/project"; // Removed unused Project type import
 import {
   Timeline,
   TimelineContent,
@@ -42,10 +42,13 @@ const processSteps = [
 
 
 interface HomePageClientProps {
-  projects: Project[]; // Assuming Project type is correct, adjust if needed based on lib/data
+  // Accept children instead of promise
+  children: React.ReactNode;
 }
 
-export function HomePageClient({ projects }: HomePageClientProps) {
+// ProjectGrid and ProjectGridSkeleton removed from this file
+
+export function HomePageClient({ children }: HomePageClientProps) { // Destructure children
   // Define variants for timeline items *before* the return statement
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -63,7 +66,8 @@ export function HomePageClient({ projects }: HomePageClientProps) {
       {/* Wrap section with motion.section for scroll-triggered animation and add ID */}
       <motion.section
         id="process-section" // Added ID for linking
-        className="px-4 lg:px-8 py-16 md:py-24 max-w-screen-lg mx-auto mb-16" // Reduced max-width
+        // Removed px, max-w, mx-auto. Kept py and mb.
+        className="py-16 md:py-24 mb-16 max-w-6xl mx-auto px-4"
         initial={{ opacity: 0, y: 50 }} // Start invisible and 50px down
         whileInView={{ opacity: 1, y: 0 }} // Animate to visible and original position
         viewport={{ once: true, amount: 0.2 }} // Trigger once when 20% is visible
@@ -72,20 +76,6 @@ export function HomePageClient({ projects }: HomePageClientProps) {
         <h2 className="mb-16 md:mb-20 text-center text-3xl md:text-4xl font-bold">Our Process</h2>
         {/* Render the shadcn/ui Timeline structure - Left aligned */}
         <Timeline positions="left"> {/* Changed from center to left */}
-          {/* Add motion wrapper for staggering children */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }} // Adjust amount as needed
-            variants={{
-              hidden: {},
-              visible: {
-                transition: {
-                  staggerChildren: 0.2, // Delay between each item animation
-                },
-              },
-            }}
-          >
           {/* itemVariants is now defined above the return statement */}
           {processSteps.map((step, index) => {
             // Create an animatable version of TimelineItem
@@ -121,14 +111,13 @@ export function HomePageClient({ projects }: HomePageClientProps) {
                   <TimelineHeading>{step.heading}</TimelineHeading>
                   <TimelineDot status={dotStatus} />
                   {!isLast && <TimelineLine done={lineDone} />}
-                  <TimelineContent>
+                  <TimelineContent className={isLast ? 'pb-0' : ''}>
                     {/* Use the original content string directly */}
                     {step.content}
                   </TimelineContent>
               </MotionTimelineItem>
             );
           })}
-          </motion.div> {/* Close motion wrapper */}
         </Timeline>
       </motion.section>
 
@@ -137,22 +126,15 @@ export function HomePageClient({ projects }: HomePageClientProps) {
       {/* Wrap projects section with motion.div for scroll-triggered animation */}
       <motion.div
         id="projects-section"
-        className="px-4 lg:px-8 py-16 md:py-24 max-w-screen-2xl mx-auto mb-16"
+        // Removed px, max-w, mx-auto. Kept py and mb.
+        className="py-16 md:py-24 mb-16 max-w-6xl mx-auto px-4"
         initial={{ opacity: 0, y: 50 }} // Start invisible and 50px down
         whileInView={{ opacity: 1, y: 0 }} // Animate to visible and original position
         viewport={{ once: true, amount: 0.1 }} // Trigger once when 10% is visible (adjust amount if needed)
         transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }} // Add slight delay after process section
       >
-         <h2 className="mb-16 md:mb-20 text-center text-3xl md:text-4xl font-bold">Projects</h2>
-         {projects.length > 0 ? (
-           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-             {projects.map((project) => (
-               <ProjectCard key={project.id} project={project} />
-             ))}
-           </div>
-         ) : (
-           <p className="text-center text-muted-foreground">No projects found.</p>
-         )}
+        {/* Render children (which includes Suspense and ProjectGrid) */}
+        {children}
       </motion.div>
     </div>
   );

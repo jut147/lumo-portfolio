@@ -9,9 +9,8 @@ export default async function ProjectsPage() {
   const projects = await getAllProjects(); // Use imported function
 
   return (
-    // Use direct padding and max-width, significantly increased vertical padding
-    // Padding will be adjusted in the next step
-    <div className="px-4 lg:px-8 pt-20 pb-16 max-w-screen-2xl mx-auto"> {/* Increased py */}
+    // Removed max-w and mx-auto, kept padding
+    <div className="pt-20 pb-16">
       <h1 className="mb-12 md:mb-16 text-center text-4xl font-bold">My Projects</h1> {/* Increased mb */}
 
       {projects.length > 0 ? (

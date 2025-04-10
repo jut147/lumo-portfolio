@@ -8,13 +8,20 @@ import { getAllProjects } from "@/lib/data"; // Import the corrected data fetchi
 
 // Removed local getProjects function definition
 
-export default async function HomePage() { // Make the component async
-  // Fetch data using the corrected function from lib/data.ts
-  // Note: getAllProjects returns a Pick<...> type, adjust HomePageClient props if needed
-  const projects = await getAllProjects();
+export default function HomePage() { // Can be non-async now
+  // Get the promise for the projects data
+  const projectsPromise = getAllProjects();
 
   return (
-    // Render the client component and pass the fetched projects data
-    <HomePageClient projects={projects} />
+    // Pass ProjectGrid Server Component as children, wrapped in Suspense
+    <HomePageClient>
+      <Suspense fallback={<ProjectGridSkeleton />}>
+        {/* Removed unused @ts-expect-error */}
+        <ProjectGrid projectsPromise={projectsPromise} />
+      </Suspense>
+    </HomePageClient>
   );
 }
+// Need to import Suspense and skeletons for this page
+import { Suspense } from "react";
+import ProjectGrid, { ProjectGridSkeleton } from "@/components/project-grid"; // Import both default and named export

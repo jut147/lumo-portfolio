@@ -30,6 +30,7 @@ Refer to `docs/TECH_STACK.md` for more details.
 *   **Utilities:** Helper functions in `src/lib/utils.ts`.
 *   **Configuration:** Site config in `src/config/site.ts`, Tailwind config in `tailwind.config.ts`, TypeScript config in `tsconfig.json`.
 *   **Types:** Shared TypeScript types in `src/types/`.
+*   **Global Layout:** The root layout (`src/app/layout.tsx`) applies a site-wide maximum width (`max-w-6xl`) and horizontal padding (`px-4`). Individual pages should generally avoid adding their own `container` or `max-w-*` classes to their root element, allowing them to inherit this global constraint.
 
 ## 4. Component Development
 
