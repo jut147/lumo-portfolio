@@ -32,7 +32,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   return (
     // Removed container classes, added padding back
     <main className="pt-20 pb-16">
-
       {/* --- Top Section Grid --- */}
       {/* Reduced large screen gap from lg:gap-12 to lg:gap-8 */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
@@ -122,8 +121,13 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             {project.client_website && (
                <div className="flex items-start gap-2">
                  <span className="font-medium text-foreground w-16 flex-shrink-0">Website:</span>
-                 <Link href={project.client_website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline break-all">
-                   {project.client_website.replace(/^https?:\/\//, '')}
+                 <Link
+                   href={project.client_website}
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   className="text-primary hover:underline break-all"
+                  >
+                   <span>{project.client_website.replace(/^https?:\/\//, '')}</span> {/* Wrap text in span */}
                  </Link>
                </div>
             )}
@@ -147,7 +151,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </div> {/* --- End Right Column --- */}
 
       </div> {/* --- End Top Section Grid --- */}
-
       {/* --- Gallery Section (Below Grid) --- */}
       {bentoGalleryItems.length > 0 ? (
         <div className="my-16">
@@ -157,7 +160,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           />
         </div>
       ) : null}
-
       {/* --- CTA Section --- */}
       <div className="text-center mt-16">
         <h2 className="text-xl md:text-2xl font-bold mb-6">Interested in a similar project?</h2>
@@ -165,7 +167,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <Link href="/contact">Get In Touch</Link>
         </Button>
       </div>
-
     </main>
   );
 }

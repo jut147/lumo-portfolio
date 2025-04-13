@@ -42,9 +42,11 @@ export function Footer({
             href="/"
             className="flex items-center gap-x-2"
             aria-label={brandName}
-          >
-            {logo}
-            <span className="font-bold text-xl">{brandName}</span>
+           >
+            <> {/* Wrap children in a single element */}
+              {logo}
+              <span className="font-bold text-xl">{brandName}</span>
+            </>
           </Link>
           {/* Container for social links and mobile theme toggle */}
           <div className="flex items-center mt-6 md:mt-0 space-x-3">
@@ -58,8 +60,8 @@ export function Footer({
                   asChild
                 >
                   <a href={link.href} target="_blank" aria-label={link.label}>
-                    {/* Wrap icon in a span to ensure single child for asChild */}
-                    <span>{link.icon}</span> 
+                    {/* Pass icon directly */}
+                    {link.icon}
                   </a>
                 </Button>
                 </li>
@@ -107,5 +109,5 @@ export function Footer({
         </div>
       </div>
     </footer>
-  )
+  );
 }

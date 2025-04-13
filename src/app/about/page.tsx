@@ -61,7 +61,6 @@ export default function AboutPage() {
           to marketing — we design experiences that move.
         </p>
       </section>
-
       {/* Section 2: Capabilities (Replaces Services & Skills) */}
       <section className="mb-16 md:mb-24">
         <h2 className="text-3xl md:text-4xl font-semibold mb-10 md:mb-12 text-center tracking-tight">
@@ -87,7 +86,6 @@ export default function AboutPage() {
           ))}
         </div>
       </section>
-
       {/* Section 3: Notable Highlights */}
       <section>
         <h2 className="text-3xl md:text-4xl font-semibold mb-10 md:mb-12 text-center tracking-tight">
@@ -128,7 +126,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
       {/* Experience Section remains hidden */}
       {false && (
         <section className="mt-16 md:mt-24 max-w-3xl mx-auto">

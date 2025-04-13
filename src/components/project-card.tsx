@@ -30,7 +30,8 @@ export function ProjectCard({ project }: ProjectCardProps) {
     >
       <Card className="flex h-full flex-col overflow-hidden transition-shadow duration-300 ease-in-out">
         <Link href={`/projects/${project.slug}`} className="block group">
-          <CardHeader className="p-0">
+          <> {/* Wrap children in fragment */}
+            <CardHeader className="p-0">
             <div className="relative h-48 w-full overflow-hidden">
               {project.hero_image_url ? (
                 <Image
@@ -77,6 +78,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
               <Badge variant="outline">{project.category}</Badge>
             )}
           </CardFooter>
+          </> {/* Close fragment */}
         </Link>
       </Card>
     </motion.div>

@@ -20,7 +20,7 @@ export function SiteFooter() {
   // Create the logo element based on the theme *after mount*
   const logoElement = mounted && theme === 'dark' ? (
     // Wrap Image in a div with rounding and overflow hidden
-    <div className="h-8 w-8 rounded overflow-hidden">
+    (<div className="h-8 w-8 rounded overflow-hidden">
       <Image
         src="/logo-white-black-bacground.svg" // Dark theme logo
         alt={`${siteConfig.name} Logo`}
@@ -29,11 +29,11 @@ export function SiteFooter() {
         // className="h-8" // Class moved to wrapper
         priority
       />
-    </div>
+    </div>)
   ) : (
     // Render light theme logo by default (server & initial client) or if theme is light
     // Wrap Image in a div with rounding and overflow hidden
-    <div className="h-8 w-8 rounded overflow-hidden">
+    (<div className="h-8 w-8 rounded overflow-hidden">
       <Image
         src="/logo-black-trans-bacground.svg" // Light theme logo (default)
         alt={`${siteConfig.name} Logo`}
@@ -42,7 +42,7 @@ export function SiteFooter() {
         // className="h-8" // Class moved to wrapper
         priority
       />
-    </div>
+    </div>)
   );
 
   // Extract main navigation links from siteConfig

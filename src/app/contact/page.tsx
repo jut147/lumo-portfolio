@@ -84,7 +84,6 @@ export default function ContactPage() {
       <p className="mb-8 md:mb-12 text-center text-lg text-muted-foreground"> {/* Standardized mb */}
         Have a question or want to work together? Send us a message!
       </p>
-
       <div className="mx-auto max-w-md">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">

@@ -61,7 +61,6 @@ export function HomePageClient({ children }: HomePageClientProps) { // Destructu
   return (
     <div>
       <WavesHero className="mb-16" /> {/* Removed negative margin */}
-
       {/* Container for constrained content */}
       <div className="max-w-6xl mx-auto px-4">
         {/* Our Process Section */}
@@ -109,17 +108,17 @@ export function HomePageClient({ children }: HomePageClientProps) { // Destructu
             return (
               // Use standard TimelineItem
               <TimelineItem key={index} status={itemStatus}>
-                 {/* Wrap content in motion.div for animation */}
-                 <motion.div variants={itemVariants}> 
-                    <TimelineHeading>{step.heading}</TimelineHeading>
-                 </motion.div>
-                 <TimelineDot status={dotStatus} />
-                 {!isLast && <TimelineLine done={lineDone} />}
-                 <motion.div variants={itemVariants}> 
-                    <TimelineContent className={isLast ? 'pb-0' : ''}>
-                      {step.content}
-                    </TimelineContent>
-                 </motion.div>
+                {/* Wrap content in motion.div for animation */}
+                <motion.div variants={itemVariants}> 
+                   <TimelineHeading>{step.heading}</TimelineHeading>
+                </motion.div>
+                <TimelineDot status={dotStatus} />
+                {!isLast && <TimelineLine done={lineDone} />}
+                <motion.div variants={itemVariants}> 
+                   <TimelineContent className={isLast ? 'pb-0' : ''}>
+                     {step.content}
+                   </TimelineContent>
+                </motion.div>
               </TimelineItem>
             );
           })}

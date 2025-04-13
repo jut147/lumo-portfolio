@@ -155,8 +155,8 @@ function MobileLink({
         className
       )}
       {...props}
-    >
-      {children}
+     >
+      <span>{children}</span> {/* Wrap children in a span */}
     </Link>
-  )
+  );
 }

@@ -14,6 +14,7 @@ export function WavesHero({ className }: WavesHeroProps) { // Destructure classN
 
   return (
     // Use cn to merge existing classes with the passed className
+    // Closes main component div
     <div className={cn("relative flex min-h-screen max-md:h-auto w-full flex-col items-center justify-center rounded-md bg-background antialiased", className)}> {/* Removed overflow-hidden */}
       {/* Container for Waves */}
       <div className="absolute inset-0 z-0">
@@ -31,7 +32,6 @@ export function WavesHero({ className }: WavesHeroProps) { // Destructure classN
            yGap={36}
          />
       </div>
-
       {/* Content Overlay */}
       <div className="relative z-10 flex flex-col items-center text-center"> {/* Added flex, flex-col, items-center */}
         {/* Text Content Wrapper */}
@@ -59,20 +59,19 @@ export function WavesHero({ className }: WavesHeroProps) { // Destructure classN
         <ChevronDown className="h-10 w-10 stroke-width-[1.5]" /> {/* Use ChevronDown */}
       </button>
     </div> {/* Closes Content Overlay div */}
-
-    {/* Scroll Down Icon (Desktop) - Remains outside, absolutely positioned */}
-    <button
-        onClick={() => {
-          const processSection = document.getElementById("process-section"); // Target process-section
-          if (processSection) {
-            processSection.scrollIntoView({ behavior: "smooth", block: "start" });
-          }
-        }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden md:block cursor-pointer text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors duration-300 animate-bounce" // Desktop: Absolute, bounce
-        aria-label="Scroll down to process" // Updated aria-label
-      >
-        <ChevronDown className="h-10 w-10 stroke-width-[1.5]" /> {/* Kept ChevronDown */}
-      </button>
-  </div> // Closes main component div
+      {/* Scroll Down Icon (Desktop) - Remains outside, absolutely positioned */}
+      <button
+          onClick={() => {
+            const processSection = document.getElementById("process-section"); // Target process-section
+            if (processSection) {
+              processSection.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+          }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden md:block cursor-pointer text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors duration-300 animate-bounce" // Desktop: Absolute, bounce
+          aria-label="Scroll down to process" // Updated aria-label
+        >
+          <ChevronDown className="h-10 w-10 stroke-width-[1.5]" /> {/* Kept ChevronDown */}
+        </button>
+    </div>
   );
 }

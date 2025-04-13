@@ -50,72 +50,76 @@ import {
            : "bg-transparent border-transparent" // Initial transparent styles
        )}
      >
-       {/* Use direct padding and max-width instead of container class */}
-       <div className="flex h-14 items-center px-4 lg:px-8 max-w-screen-2xl mx-auto">
-         {/* Logo/Brand */}
-         <Link href="/" className="mr-6 flex items-center space-x-2">
-           {/* Conditionally render logo based on theme *after mount* */}
-           {mounted && theme === 'dark' ? (
-             // Wrap Image in a div with rounding and overflow hidden
-             <div className="h-7 w-7 rounded overflow-hidden"> {/* Increased size */}
-               <Image
-                 src="/logo-white-black-bacground.svg" // Dark theme logo
-                 alt={`${siteConfig.name} Logo`}
-                 width={28} // Increased size
-                 height={28} // Increased size
-                 // className="h-7" // Class moved to wrapper
-                 priority // Prioritize loading the visible logo
-               />
-             </div>
-           ) : (
-             // Render light theme logo by default (server & initial client) or if theme is light
-             // Wrap Image in a div with rounding and overflow hidden
-             <div className="h-7 w-7 rounded overflow-hidden"> {/* Increased size */}
-               <Image
-                 src="/logo-black-trans-bacground.svg" // Light theme logo (default)
-                 alt={`${siteConfig.name} Logo`}
-                 width={28} // Increased size
-                 height={28} // Increased size
-                 // className="h-7" // Class moved to wrapper
-                 priority // Prioritize loading the visible logo
-               />
-             </div>
-           )}
-           {/* Remove the text span */}
-           {/* <span className="font-bold sm:inline-block">
-             {siteConfig.name}
-           </span> */}
-         </Link>
-
-        {/* Main Navigation */}
-        <NavigationMenu className="hidden md:flex"> {/* Changed sm:flex to md:flex */}
-          <NavigationMenuList>
-            {siteConfig.mainNav?.map(
-              (item: { href?: string; title: string }) => // Add type for item
-                item.href && (
-                  <NavigationMenuItem key={item.href}>
-                    <Link href={item.href} legacyBehavior passHref>
-                      <NavigationMenuLink
-                        className={navigationMenuTriggerStyle()}
-                        active={pathname === item.href} // Highlight active link
-                      >
-                        {item.title}
-                      </NavigationMenuLink>
-                    </Link>
-                  </NavigationMenuItem>
-                )
+      {/* Use direct padding and max-width instead of container class */}
+      <div className="flex h-14 items-center px-4 lg:px-8 max-w-screen-2xl mx-auto">
+        {/* Logo/Brand */}
+        <Link href="/" className="mr-6 flex items-center space-x-2">
+          {/* Wrap conditional logo rendering in a single element */}
+          <span>
+            {/* Conditionally render logo based on theme *after mount* */}
+            {mounted && theme === 'dark' ? (
+              // Wrap Image in a div with rounding and overflow hidden
+              (<div className="h-7 w-7 rounded overflow-hidden"> {/* Increased size */}
+                <Image
+                  src="/logo-white-black-bacground.svg" // Dark theme logo
+                  alt={`${siteConfig.name} Logo`}
+                  width={28} // Increased size
+                  height={28} // Increased size
+                  // className="h-7" // Class moved to wrapper
+                  priority // Prioritize loading the visible logo
+                />
+              </div>)
+            ) : (
+              // Render light theme logo by default (server & initial client) or if theme is light
+              // Wrap Image in a div with rounding and overflow hidden
+              (<div className="h-7 w-7 rounded overflow-hidden"> {/* Increased size */}
+                <Image
+                  src="/logo-black-trans-bacground.svg" // Light theme logo (default)
+                  alt={`${siteConfig.name} Logo`}
+                  width={28} // Increased size
+                  height={28} // Increased size
+                  // className="h-7" // Class moved to wrapper
+                  priority // Prioritize loading the visible logo
+                />
+              </div>)
             )}
-          </NavigationMenuList>
-        </NavigationMenu>
+            {/* Remove the text span */}
+            {/* <span className="font-bold sm:inline-block">
+              {siteConfig.name}
+            </span> */}
+          </span>
+        </Link>
 
-         {/* Right side items (Theme toggle, etc.) */}
-         <div className="flex flex-1 items-center justify-end space-x-4">
-           <div className="hidden md:flex"> {/* Wrapper to hide ThemeToggle on mobile */}
-             <ThemeToggle />
-           </div>
-           <MobileNav /> {/* Add MobileNav */}
-         </div>
-       </div>
+       {/* Main Navigation */}
+       <NavigationMenu className="hidden md:flex"> {/* Changed sm:flex to md:flex */}
+         <NavigationMenuList>
+           {siteConfig.mainNav?.map(
+             (item: { href?: string; title: string }) => // Add type for item
+               item.href && (
+                 <NavigationMenuItem key={item.href}>
+                   <Link href={item.href}>
+                     <NavigationMenuLink
+                       asChild // Add asChild prop here
+                       className={navigationMenuTriggerStyle()}
+                       active={pathname === item.href} // Highlight active link
+                     >
+                       {item.title}
+                     </NavigationMenuLink>
+                   </Link>
+                 </NavigationMenuItem>
+               )
+           )}
+         </NavigationMenuList>
+       </NavigationMenu>
+
+        {/* Right side items (Theme toggle, etc.) */}
+        <div className="flex flex-1 items-center justify-end space-x-4">
+          <div className="hidden md:flex"> {/* Wrapper to hide ThemeToggle on mobile */}
+            <ThemeToggle />
+          </div>
+          <MobileNav /> {/* Add MobileNav */}
+        </div>
+      </div>
     </header>
-  )
+  );
 }

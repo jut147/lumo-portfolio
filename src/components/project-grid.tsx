@@ -10,7 +10,7 @@ export function ProjectGridSkeleton() { // Export the skeleton
       <h2 className="mb-16 md:mb-20 text-center text-3xl md:text-4xl font-bold invisible">Projects</h2> {/* Keep for layout spacing, but hide */}
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
         {[...Array(3)].map((_, i) => ( // Show 3 skeletons initially
-          <ProjectCardSkeleton key={i} />
+          (<ProjectCardSkeleton key={i} />)
         ))}
       </div>
     </>

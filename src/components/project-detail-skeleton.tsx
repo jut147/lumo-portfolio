@@ -4,7 +4,6 @@ export function ProjectDetailSkeleton() {
   return (
     // Match page padding
     <div className="pt-20 pb-16">
-
       {/* --- Top Section Grid --- */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 mb-16">
 
@@ -59,7 +58,6 @@ export function ProjectDetailSkeleton() {
         </div> {/* --- End Right Column --- */}
 
       </div> {/* --- End Top Section Grid --- */}
-
       {/* --- Gallery Section Skeleton --- */}
       <div className="my-16">
         <Skeleton className="h-8 w-1/4 mx-auto mb-8" /> {/* Heading */}
@@ -70,13 +68,11 @@ export function ProjectDetailSkeleton() {
           ))}
         </div>
       </div>
-
       {/* --- CTA Section Skeleton --- */}
       <div className="text-center mt-16">
         <Skeleton className="h-8 w-1/2 mx-auto mb-6" /> {/* Heading */}
         <Skeleton className="h-10 w-32 mx-auto" /> {/* Button */}
       </div>
-
     </div>
   );
 }

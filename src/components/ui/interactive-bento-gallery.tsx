@@ -327,7 +327,6 @@ const InteractiveBentoGallery: React.FC<InteractiveBentoGalleryProps> = ({
                     )}
                 </div>
             )}
-
             {/* Bento Grid */}
             <motion.div
                 className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 md:gap-4 auto-rows-[120px] sm:auto-rows-[150px] md:auto-rows-[180px]"
@@ -369,7 +368,6 @@ const InteractiveBentoGallery: React.FC<InteractiveBentoGalleryProps> = ({
                     </motion.div>
                 ))}
             </motion.div>
-
             {/* Modal */}
             <AnimatePresence>
                 {selectedItem && (
