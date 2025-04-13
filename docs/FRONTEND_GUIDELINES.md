@@ -38,10 +38,18 @@ Refer to `docs/TECH_STACK.md` for more details.
 *   **Props:** Define clear interfaces for component props using TypeScript. Use descriptive prop names.
 *   **Client vs. Server:** Explicitly use the `"use client"` directive only when necessary (e.g., for hooks like `useState`, `useEffect`, event handlers). Fetch data in Server Components or dedicated data-fetching functions (`src/lib/data.ts`) where possible.
 *   **Composition:** Build complex UI by composing smaller, reusable components.
-*   **shadcn/ui:** Leverage shadcn/ui components for common UI patterns (Button, Card, Dialog, etc.). Customize appearance using Tailwind classes passed via the `className` prop. Use `cn()` utility from `src/lib/utils.ts` to merge classes conditionally. The `Timeline` component (`src/components/ui/timeline.tsx`) is an example of a composite component built using shadcn/ui primitives and concepts within this project.
+*   **shadcn/ui:** Leverage shadcn/ui components for common UI patterns (Button, Card, Dialog, etc.). Customize appearance using Tailwind classes passed via the `className` prop. Use `cn()` utility from `src/lib/utils.ts` to merge classes conditionally.
+*   **Next.js `<Link>` Component:**
+    *   Always ensure the `legacyBehavior` prop is **removed**.
+    *   The updated `<Link>` requires exactly **one** direct child React element. If you need multiple elements (e.g., an icon and text) or just text inside the link, wrap them in a single element like `<span>` or a React Fragment `<>`. Example: `<Link href="/about"><span>About Us</span></Link>`.
+*   **`NavigationMenuLink`:** This component typically handles its own linking via its `href` prop and renders the necessary `<a>` tag. Avoid wrapping it in an additional Next.js `<Link>` component.
+*   **`asChild` Prop Usage:**
+    *   When using the `asChild` prop on a shadcn/ui component (like `<Button asChild>`), the component expects exactly **one** direct child React element to which it can pass its props.
+    *   Ensure the child is a single element (e.g., `<a ...>...</a>` or `<Link ...>...</Link>`).
+    *   **Pitfall:** Occasionally, even with a single element child, complex interactions within the child or the parent component might still lead to `React.Children.only` errors (as seen with the footer social links). If this occurs, consider applying styles directly to the child element (e.g., using `buttonVariants` on an `<a>` tag) instead of relying on `asChild`.
+*   **Button Loading State:** The `Button` component (`src/components/ui/button.tsx`) accepts a `loading?: boolean` prop. When `true`, the button will be disabled and display a spinner icon (`Loader2` from `lucide-react`). Use this for indicating asynchronous operations like form submissions.
     *   **Button Loading State:** The `Button` component (`src/components/ui/button.tsx`) now accepts a `loading?: boolean` prop. When `true`, the button will be disabled and display a spinner icon (`Loader2` from `lucide-react`). Use this for indicating asynchronous operations like form submissions.
-    *   **`asChild` Prop Pitfall:** When using the `asChild` prop on a Shadcn UI component (like `Button` or others based on Radix UI's `Slot`), ensure the direct child element you provide is a *single* React element. If your intended child has its own children (e.g., an `<a>` tag containing an icon), wrap those inner children in a `<span>` or `<>` to avoid `React.Children.only` errors. Example: `<Button asChild><a href="..."><span><Icon/></span></a></Button>`.
-
+    *   *(Previous `asChild` note merged into the point above)*
 ## 5. Styling
 
 *   **Tailwind CSS:** Primarily use Tailwind utility classes for styling. Avoid custom CSS files unless absolutely necessary for complex or global styles not achievable with Tailwind.

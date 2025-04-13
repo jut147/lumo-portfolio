@@ -1,4 +1,4 @@
-import { Button, buttonVariants } from "@/components/ui/button" // Import buttonVariants
+import { buttonVariants } from "@/components/ui/button" // Import buttonVariants, removed unused Button
 import React from "react";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/ui/theme-toggle"; // Import ThemeToggle

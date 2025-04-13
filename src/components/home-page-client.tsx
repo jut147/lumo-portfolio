@@ -108,16 +108,26 @@ export function HomePageClient({ children }: HomePageClientProps) { // Destructu
             return (
               // Use standard TimelineItem
               <TimelineItem key={index} status={itemStatus}>
-                {/* Wrap content in motion.div for animation */}
-                <motion.div variants={itemVariants}> 
-                   <TimelineHeading>{step.heading}</TimelineHeading>
+                {/* Heading - wrapped in motion.div positioned in grid col 3 */}
+                <motion.div
+                  variants={itemVariants}
+                  className="col-start-3 col-end-4" // Position wrapper in grid
+                >
+                  <TimelineHeading>{step.heading}</TimelineHeading>
                 </motion.div>
+
+                {/* Dot and Line (positioned in grid col 2 by their own styles) */}
                 <TimelineDot status={dotStatus} />
                 {!isLast && <TimelineLine done={lineDone} />}
-                <motion.div variants={itemVariants}> 
-                   <TimelineContent className={isLast ? 'pb-0' : ''}>
-                     {step.content}
-                   </TimelineContent>
+
+                {/* Content - wrapped in motion.div positioned in grid col 3 */}
+                <motion.div
+                  variants={itemVariants}
+                  className="col-start-3 col-end-4" // Position wrapper in grid
+                >
+                  <TimelineContent className={isLast ? 'pb-0' : ''}>
+                    {step.content}
+                  </TimelineContent>
                 </motion.div>
               </TimelineItem>
             );

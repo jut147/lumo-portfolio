@@ -21,6 +21,7 @@ This repository contains the source code for my personal portfolio website, buil
 *   **Linting:** [ESLint](https://eslint.org/)
 *   **Deployment/Analytics:** [Vercel](https://vercel.com/)
 
+(See [docs/TECH_STACK.md](docs/TECH_STACK.md) for more details and versions)
 ## Features
 
 *   Responsive design across devices
@@ -75,23 +76,32 @@ This project uses Supabase for certain features. You'll need to set up your envi
 
 ### Running the Development Server
 
-Start the development server:
+Start the development server (uses Turbopack):
 
 ```bash
-next dev --turbopack
-# or
-# yarn dev
-# or
-# pnpm dev
+npm run dev
+# or yarn dev / pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to see the application. The page will auto-update as you make edits.
 
+### Building for Production
+
+```bash
+npm run build
+```
+
+### Running the Production Build Locally
+
+```bash
+npm run start
+```
+
 ## Testing
 
-*   **End-to-End Tests:** Run Playwright tests:
+*   **End-to-End Tests:** Run Playwright tests using the defined script:
     ```bash
-    npx playwright test
+    npm run test:e2e
     ```
 ## Deployment
 

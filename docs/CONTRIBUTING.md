@@ -13,6 +13,11 @@ First off, thank you for considering contributing! Your help is appreciated.
 
 *   Open a new issue to discuss your enhancement suggestion. Clearly describe the proposed enhancement and its potential benefits.
 
+### Development Setup
+
+1.  Ensure you have the prerequisites listed in the main [README.md](./../README.md#prerequisites).
+2.  Follow the [Installation](./../README.md#installation) and [Environment Variables](./../README.md#environment-variables) setup steps in the `README.md`.
+
 ### Pull Requests
 
 1.  Fork the repository.
@@ -40,7 +45,26 @@ First off, thank you for considering contributing! Your help is appreciated.
 ### Code Style
 
 *   Follow the existing code style.
-*   Run `npm run lint` (or equivalent) to check for linting errors before submitting.
+*   Run `npm run lint` to check for linting errors before submitting.
+
+#### Key Development Scripts
+
+*   `npm run dev`: Starts the development server with Turbopack.
+*   `npm run build`: Creates a production build of the application.
+*   `npm run start`: Runs the production build locally.
+*   `npm run lint`: Checks the code for linting errors and style issues.
+*   `npm run test:e2e`: Runs the Playwright end-to-end tests.
+
+#### Important Component Patterns
+
+Based on recent updates and Next.js/shadcn/ui best practices:
+
+*   **Next.js `<Link>`:**
+    *   Do **not** use the `legacyBehavior` prop.
+    *   The `<Link>` component (without `legacyBehavior`) requires exactly **one** direct child React element. Wrap multiple elements or text nodes in a single element (e.g., `<span>` or `<>`).
+*   **`shadcn/ui` Components & `asChild`:**
+    *   Components like `NavigationMenuLink` often render their own `<a>` tag when an `href` is provided. Avoid wrapping them in an unnecessary outer Next.js `<Link>`. Pass the `href` directly to the `shadcn/ui` component.
+    *   When using the `asChild` prop (e.g., on `<Button asChild>`), ensure the component has exactly **one** direct child React element. The `asChild` prop merges the parent's props onto the child. If you encounter `React.Children.only` errors, double-check this structure or consider applying styles directly to the child element instead of using `asChild` if feasible (see `ui/footer.tsx` social links for an example).
 
 ## Code of Conduct
 

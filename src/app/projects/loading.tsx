@@ -3,7 +3,7 @@ import { ProjectCardSkeleton } from "@/components/project-card-skeleton";
 export default function ProjectsLoading() {
   return (
     // Match page padding
-    <div className="pt-20 pb-16">
+    <div className="pt-20 pb-16 max-w-6xl mx-auto px-4"> {/* Added container classes */}
       {/* Static Heading */}
       <h1 className="mb-12 md:mb-16 text-center text-4xl font-bold">My Projects</h1>
       {/* Grid of Skeletons */}
