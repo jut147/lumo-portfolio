@@ -642,3 +642,37 @@ Throughout the development process, the Perplexity MCP server can be used for:
 *   "What are the common props for Framer Motion's `motion.div` component?"
 
 This plan provides a structured approach to building the portfolio website. Each step builds upon the previous one, starting with the core setup and gradually adding features and complexity.
+
+## 10. About Page Redesign (Phase 1: Premium Enhancement)
+
+**Goal:** Elevate the design of the About page (`src/app/about/page.tsx`) to feel more premium, cohesive, and aligned with top-tier design standards, integrating the Services and Skills sections more thoughtfully.
+
+**Phase 10.1: Analysis & Research**
+
+1.  **Baseline Code Review:** Re-read `src/app/about/page.tsx` for the current structure.
+2.  **Component Inventory:** Check `src/components/ui/` for available Shadcn UI components (Card, Tabs, Accordion, Badge, etc.).
+3.  **Design Trend Research (Perplexity):** Use Perplexity MCP to research:
+    *   "UI/UX design trends for modern portfolio 'About' pages 2025"
+    *   "Best practices for showcasing services and skills visually on agency/portfolio websites"
+    *   "Examples of award-winning 'About Us' page designs"
+4.  **Current Page Analysis:** Evaluate flow, hierarchy, consistency, and engagement.
+
+**Phase 10.2: Redesign Strategy**
+
+1.  **Refine Core Message:** Ensure the "What We Do" intro paragraph is impactful.
+2.  **Integrate Services & Skills:** Create a unified "Capabilities" or "Expertise" section.
+    *   **Approach:** Use a responsive grid of `Card` components.
+    *   **Card Content:** Each card represents a high-level capability (e.g., "Web Design & Development", "Branding & Visual Identity"). Include title, optional icon, and list related services/skills (using text or subtle `Badge` components).
+3.  **Elevate "Notable Highlights":** Enhance the existing card-based structure.
+    *   **Styling:** Ensure consistent `Card` styling (background, border, padding) and add subtle hover effects.
+    *   **Typography:** Refine text presentation for readability and impact.
+    *   **Layout:** Maintain vertical stack with generous spacing.
+4.  **Visual Polish & Consistency:**
+    *   Apply consistent spacing, typography, and component variants.
+    *   Utilize whitespace effectively for a clean look.
+
+**Phase 10.3: Implementation (Requires ACT MODE)**
+
+1.  Perform research steps (Perplexity).
+2.  Implement the redesign in `src/app/about/page.tsx` based on the strategy.
+3.  Update relevant documentation (`FRONTEND_GUIDELINES.md`, `QA_Test_Plan.md`).

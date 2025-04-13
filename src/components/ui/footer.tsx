@@ -58,7 +58,8 @@ export function Footer({
                   asChild
                 >
                   <a href={link.href} target="_blank" aria-label={link.label}>
-                    {link.icon}
+                    {/* Wrap icon in a span to ensure single child for asChild */}
+                    <span>{link.icon}</span> 
                   </a>
                 </Button>
                 </li>

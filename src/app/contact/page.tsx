@@ -1,10 +1,12 @@
 "use client"; // Required for form handling hooks
 
+import * as React from "react"; // Import React for useState
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
-import { supabase } from "@/lib/supabaseClient"; // Import Supabase client
+// Remove direct Supabase client import, as it's handled by the action
+import { submitContactForm } from "./actions"; // Import the Server Action
 
 import { Button } from "@/components/ui/button";
 import {
@@ -32,6 +34,8 @@ const contactFormSchema = z.object({
 });
 
 export default function ContactPage() {
+  const [isLoading, setIsLoading] = React.useState(false); // Add loading state
+
   // Define the form using react-hook-form
   const form = useForm<z.infer<typeof contactFormSchema>>({
     resolver: zodResolver(contactFormSchema),
@@ -42,32 +46,34 @@ export default function ContactPage() {
     },
   });
 
-  // Define the submit handler
+  // Define the submit handler using the Server Action
   async function onSubmit(values: z.infer<typeof contactFormSchema>) {
-    // Insert data into Supabase
-    // Removed unused 'data' variable from destructuring
-    const { error } = await supabase 
-      .from('form_submissions')
-      .insert([
-        {
-          name: values.name, 
-          email: values.email, 
-          message: values.message 
-        },
-      ]);
+    setIsLoading(true); // Set loading true
+    try {
+      const result = await submitContactForm(values); // Call the server action
 
-    if (error) {
-      console.error("Error submitting form:", error);
-      toast.error("Failed to send message.", {
+      if (result.success) {
+        toast.success(result.message, {
+           description: "Thank you for contacting us. We'll get back to you soon.",
+        });
+        form.reset(); // Reset form on success
+      } else {
+        // Handle potential validation errors returned from server
+        const description = result.errors 
+          ? result.errors.map(e => `${e.path.join('.')}: ${e.message}`).join('\n') 
+          : "Please check your input and try again.";
+        toast.error(result.message, {
+          description: description,
+        });
+      }
+    } catch (error) {
+      // Catch unexpected errors during the action call
+      console.error("Error calling submitContactForm action:", error);
+      toast.error("An unexpected error occurred.", {
         description: "Please try again later.",
       });
-    } else {
-      console.log("Form submitted successfully:", values);
-      toast.success("Message sent successfully!", {
-        description: "Thank you for contacting us. We'll get back to you soon.",
-      });
-      // Optionally reset the form
-      form.reset(); 
+    } finally {
+      setIsLoading(false); // Set loading false regardless of outcome
     }
   }
 
@@ -125,7 +131,10 @@ export default function ContactPage() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">Send Message</Button>
+            {/* Pass loading state to Button */}
+            <Button type="submit" className="w-full" loading={isLoading}>
+              Send Message 
+            </Button>
           </form>
         </Form>
       </div>

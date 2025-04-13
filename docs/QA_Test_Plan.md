@@ -162,10 +162,13 @@ mindmap
     *   Privacy page content (`/privacy`).
     *   Project Card details rendering (on Home and Projects pages).
 *   **Contact Form:**
-    *   Input field validation (name, email, message).
-    *   Successful form submission (integration with Supabase).
-    *   Error handling for failed submissions.
-    *   Submission confirmation/feedback (e.g., using `sonner.tsx`).
+    *   Input field validation (client-side via Zod).
+    *   Successful form submission using Server Action (`src/app/contact/actions.ts`).
+    *   Verification that data is correctly saved to the `form_submissions` table in Supabase.
+    *   Server-side validation handling within the Server Action.
+    *   Button loading state: Verify the submit button shows a spinner and is disabled during submission.
+    *   Error handling for failed submissions (both validation errors and database errors from the Server Action).
+    *   Submission confirmation/feedback (e.g., using `sonner.tsx`) upon successful Server Action completion.
 *   **Theme Switching:**
     *   Toggling between light and dark themes using `theme-toggle.tsx`.
     *   Persistence of theme choice (e.g., using `localStorage` via `theme-provider.tsx`).
@@ -189,7 +192,7 @@ mindmap
 
 ### 4.3 Edge Cases & Boundary Conditions
 
-*   **Contact Form:** Empty submissions, submissions with invalid email formats, excessively long messages, special characters in inputs, rapid resubmissions.
+*   **Contact Form:** Empty submissions, submissions with invalid email formats, excessively long messages, special characters in inputs, rapid resubmissions, submission during slow network conditions (verify loading state persists), submission failure scenarios (database offline, server error).
 *   **Navigation:** Clicking links rapidly, navigating while pages are loading.
 *   **Theme:** Switching themes rapidly, testing on browsers with specific theme preferences set.
 *   **Responsiveness:** Testing on unusual screen resolutions or aspect ratios.
@@ -297,7 +300,7 @@ These are initial targets. Some may be refined after baseline testing and analys
 ## 10. Risks & Mitigation
 
 *   **Risk:** Incomplete Supabase integration testing due to lack of backend visibility.
-    *   **Mitigation:** Collaborate with developers to understand Supabase setup (RLS policies, functions used), potentially use Supabase logs or mock data for testing. Ensure Supabase keys are handled securely.
+    *   **Mitigation:** Collaborate with developers to understand Supabase setup (RLS policies, functions used), test the Server Action (`src/app/contact/actions.ts`) thoroughly by checking database entries and return values, potentially use Supabase logs. Ensure Supabase keys are handled securely via environment variables.
 *   **Risk:** Inconsistent testing across different environments.
     *   **Mitigation:** Ensure staging environment closely mirrors production; automate environment setup where possible. Document environment configurations.
 *   **Risk:** Regression bugs introduced by new features/fixes.

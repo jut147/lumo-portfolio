@@ -80,8 +80,7 @@ export function HomePageClient({ children }: HomePageClientProps) { // Destructu
         <Timeline positions="left"> {/* Changed from center to left */}
           {/* itemVariants is now defined above the return statement */}
           {processSteps.map((step, index) => {
-            // Create an animatable version of TimelineItem
-            const MotionTimelineItem = motion(TimelineItem);
+            // Removed MotionTimelineItem definition
 
             // const isFirst = index === 0; // Removed unused variable
             const isLast = index === processSteps.length - 1;
@@ -108,16 +107,20 @@ export function HomePageClient({ children }: HomePageClientProps) { // Destructu
 
             // itemVariants is defined outside the loop now
             return (
-              // Use the animatable MotionTimelineItem directly
-              <MotionTimelineItem key={index} variants={itemVariants} status={itemStatus}>
-                  <TimelineHeading>{step.heading}</TimelineHeading>
-                  <TimelineDot status={dotStatus} />
-                  {!isLast && <TimelineLine done={lineDone} />}
-                  <TimelineContent className={isLast ? 'pb-0' : ''}>
-                    {/* Use the original content string directly */}
-                    {step.content}
-                  </TimelineContent>
-              </MotionTimelineItem>
+              // Use standard TimelineItem
+              <TimelineItem key={index} status={itemStatus}>
+                 {/* Wrap content in motion.div for animation */}
+                 <motion.div variants={itemVariants}> 
+                    <TimelineHeading>{step.heading}</TimelineHeading>
+                 </motion.div>
+                 <TimelineDot status={dotStatus} />
+                 {!isLast && <TimelineLine done={lineDone} />}
+                 <motion.div variants={itemVariants}> 
+                    <TimelineContent className={isLast ? 'pb-0' : ''}>
+                      {step.content}
+                    </TimelineContent>
+                 </motion.div>
+              </TimelineItem>
             );
           })}
         </Timeline>
