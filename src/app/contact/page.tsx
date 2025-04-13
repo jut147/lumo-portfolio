@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
+import { supabase } from "@/lib/supabaseClient"; // Import Supabase client
 
 import { Button } from "@/components/ui/button";
 import {
@@ -42,15 +43,32 @@ export default function ContactPage() {
   });
 
   // Define the submit handler
-  function onSubmit(values: z.infer<typeof contactFormSchema>) {
-    // For now, just log the values and show a toast
-    // In a real application, you would send this data to an API endpoint
-    console.log(values);
-    toast.success("Message sent successfully!", {
-      description: "Thank you for contacting us. We'll get back to you soon.",
-    });
-    // Optionally reset the form
-    // form.reset();
+  async function onSubmit(values: z.infer<typeof contactFormSchema>) {
+    // Insert data into Supabase
+    // Removed unused 'data' variable from destructuring
+    const { error } = await supabase 
+      .from('form_submissions')
+      .insert([
+        {
+          name: values.name, 
+          email: values.email, 
+          message: values.message 
+        },
+      ]);
+
+    if (error) {
+      console.error("Error submitting form:", error);
+      toast.error("Failed to send message.", {
+        description: "Please try again later.",
+      });
+    } else {
+      console.log("Form submitted successfully:", values);
+      toast.success("Message sent successfully!", {
+        description: "Thank you for contacting us. We'll get back to you soon.",
+      });
+      // Optionally reset the form
+      form.reset(); 
+    }
   }
 
   return (
