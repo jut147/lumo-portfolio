@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button" // Import buttonVariants
 import React from "react";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/ui/theme-toggle"; // Import ThemeToggle
@@ -53,17 +53,15 @@ export function Footer({
             <ul className="flex list-none space-x-3">
               {socialLinks.map((link, i) => (
                 <li key={i}>
-                <Button
-                  variant="secondary"
-                  size="icon"
-                  className="h-10 w-10 rounded-full"
-                  asChild
-                >
-                  <a href={link.href} target="_blank" aria-label={link.label}>
-                    {/* Pass icon directly */}
+                  {/* Apply button styles directly to the anchor tag */}
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    aria-label={link.label}
+                    className={buttonVariants({ variant: "secondary", size: "icon", className: "h-10 w-10 rounded-full" })}
+                  >
                     {link.icon}
                   </a>
-                </Button>
                 </li>
               ))}
             </ul>

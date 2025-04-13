@@ -97,15 +97,14 @@ import {
              (item: { href?: string; title: string }) => // Add type for item
                item.href && (
                  <NavigationMenuItem key={item.href}>
-                   <Link href={item.href}>
-                     <NavigationMenuLink
-                       asChild // Add asChild prop here
-                       className={navigationMenuTriggerStyle()}
-                       active={pathname === item.href} // Highlight active link
-                     >
-                       {item.title}
-                     </NavigationMenuLink>
-                   </Link>
+                   {/* Use NavigationMenuLink directly with href */}
+                   <NavigationMenuLink
+                     href={item.href} // Pass href directly
+                     className={navigationMenuTriggerStyle()}
+                     active={pathname === item.href} // Highlight active link
+                   >
+                     {item.title}
+                   </NavigationMenuLink>
                  </NavigationMenuItem>
                )
            )}
