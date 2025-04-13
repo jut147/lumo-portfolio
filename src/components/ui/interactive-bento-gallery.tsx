@@ -206,7 +206,7 @@ const GalleryModal = ({ selectedItem, onClose, setSelectedItem, mediaItems }: Ga
 
                 {/* Media Display Area */}
                 <div className="flex-1 p-6 md:p-8 flex items-center justify-center overflow-hidden relative">
-                    <AnimatePresence mode="wait">
+                    <AnimatePresence mode="wait"> {/* Restore AnimatePresence */}
                         <motion.div
                             key={selectedItem.id}
                             className="relative w-full h-full rounded-xl md:rounded-2xl overflow-hidden shadow-inner"
@@ -221,7 +221,7 @@ const GalleryModal = ({ selectedItem, onClose, setSelectedItem, mediaItems }: Ga
                                 {selectedItem.desc && <p className="text-sm text-white/80 mt-1 truncate">{selectedItem.desc}</p>}
                             </div>
                         </motion.div>
-                    </AnimatePresence>
+                    </AnimatePresence> {/* Restore AnimatePresence */}
                 </div>
             </motion.div>
 
@@ -250,7 +250,7 @@ const GalleryModal = ({ selectedItem, onClose, setSelectedItem, mediaItems }: Ga
                         onClick={() => setSelectedItem(item)}
                         className={thumbnailClasses}
                         style={{ zIndex: isActive ? 10 : mediaItems.length - index }}
-                        layoutId={`thumbnail-${item.id}`}
+                        layoutId={`thumbnail-${item.id}`} // Restore layoutId
                         transition={{ type: 'spring', stiffness: 400, damping: 20 }}
                       >
                         {/* Use Next/Image for thumbnails */}
@@ -336,13 +336,13 @@ const InteractiveBentoGallery: React.FC<InteractiveBentoGalleryProps> = ({
                 variants={{
                     hidden: { opacity: 0 },
                     visible: { opacity: 1, transition: { staggerChildren: 0.05 } }
-                }}
-            >
-                {/* Removed unused index from map */}
-                {validMediaItems.map((item) => (
-                    <motion.div
-                        key={item.id}
-                        layoutId={`media-${item.id}`}
+                 }}
+             >
+                 {/* Restore item mapping */}
+                 {validMediaItems.map((item) => (
+                     <motion.div
+                         key={item.id}
+                        layoutId={`media-${item.id}`} // Restore layoutId
                         className={`relative overflow-hidden rounded-lg md:rounded-xl shadow-sm cursor-pointer group ${item.span || 'col-span-1 row-span-1'}`}
                         onClick={() => handleItemClick(item)}
                         variants={{
@@ -363,13 +363,13 @@ const InteractiveBentoGallery: React.FC<InteractiveBentoGalleryProps> = ({
                                 className="text-white text-xs sm:text-sm font-medium line-clamp-1 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
                             >
                                 {item.title}
-                            </motion.h3>
-                        </div>
-                    </motion.div>
-                ))}
-            </motion.div>
-            {/* Modal */}
-            <AnimatePresence>
+                         </motion.h3>
+                         </div>
+                     </motion.div>
+                 ))}
+             </motion.div>
+             {/* Modal */}
+            <AnimatePresence> {/* Restore AnimatePresence */}
                 {selectedItem && (
                     <GalleryModal
                         selectedItem={selectedItem}
@@ -378,7 +378,7 @@ const InteractiveBentoGallery: React.FC<InteractiveBentoGalleryProps> = ({
                         mediaItems={validMediaItems}
                     />
                 )}
-            </AnimatePresence>
+            </AnimatePresence> {/* Restore AnimatePresence */}
         </div>
     );
 };

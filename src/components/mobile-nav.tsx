@@ -31,8 +31,11 @@ export function MobileNav() {
           variant="ghost"
            className="px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden" // Only show on mobile
          >
-           <Menu className="h-10 w-10" /> {/* Increased size */}
-           <span className="sr-only">Toggle Menu</span>
+           {/* Wrap multiple children in a fragment for asChild */}
+           <>
+             <Menu className="h-10 w-10" /> {/* Increased size */}
+             <span className="sr-only">Toggle Menu</span>
+           </>
          </Button>
        </SheetTrigger>
        <SheetContent side="right" className="p-6 pt-8"> {/* Added padding */}
