@@ -95,10 +95,10 @@ const MediaItem = ({ item, className, onClick }: { item: MediaItemType, classNam
 
     if (item.type === 'video') {
         return (
-            <div className={`${className} relative overflow-hidden bg-black`}> {/* Added bg-black */}
+            <div className={`${className ?? ''} relative overflow-hidden bg-black`}>
                 <video
                     ref={videoRef}
-                    className="w-full h-full object-cover cursor-pointer" // Added cursor-pointer
+                    className="w-full h-full max-w-full max-h-full cursor-pointer"
                     onClick={onClick}
                     playsInline
                     muted
@@ -120,6 +120,7 @@ const MediaItem = ({ item, className, onClick }: { item: MediaItemType, classNam
                 )}
             </div>
         );
+        // Removed extraneous closing parenthesis and semicolon
     }
 
     // Use Next.js Image component
@@ -127,7 +128,7 @@ const MediaItem = ({ item, className, onClick }: { item: MediaItemType, classNam
         <Image
             src={item.url}
             alt={item.title || item.desc || 'Gallery image'}
-            className={`${className} object-cover cursor-pointer`} // Removed w-full h-full, handled by fill
+            className={`${className} max-w-full max-h-full object-cover cursor-pointer`}
             onClick={onClick}
             fill // Use fill to cover parent container
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw" // Example sizes, adjust as needed
