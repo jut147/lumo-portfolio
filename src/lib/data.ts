@@ -35,8 +35,39 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
     return null; // Return null if not found or error occurs
   }
 
-  // Type assertion should be safe if type definition matches schema
-  // Ensure content_sections is parsed correctly if needed (Supabase client might handle jsonb automatically)
+  // Safely parse JSONB fields returned as strings
+  if (data && typeof data.bento_gallery_items === 'string') {
+    try {
+      data.bento_gallery_items = JSON.parse(data.bento_gallery_items);
+    } catch (parseError) {
+      console.error(`Error parsing bento_gallery_items for slug "${slug}":`, parseError);
+      data.bento_gallery_items = null; // Set to null on parse error
+    }
+  } else if (data && data.bento_gallery_items !== null) {
+     // If it's not a string and not null, ensure it's an array (or set to null if invalid)
+     if (!Array.isArray(data.bento_gallery_items)) {
+        console.warn(`Unexpected type for bento_gallery_items for slug "${slug}":`, typeof data.bento_gallery_items);
+        data.bento_gallery_items = null;
+     }
+  }
+
+  // Add similar parsing for content_sections if it's also JSONB
+  if (data && typeof data.content_sections === 'string') {
+    try {
+      data.content_sections = JSON.parse(data.content_sections);
+    } catch (parseError) {
+      console.error(`Error parsing content_sections for slug "${slug}":`, parseError);
+      data.content_sections = null; // Set to null on parse error
+    }
+  } else if (data && data.content_sections !== null) {
+     if (!Array.isArray(data.content_sections)) {
+        console.warn(`Unexpected type for content_sections for slug "${slug}":`, typeof data.content_sections);
+        data.content_sections = null;
+     }
+  }
+
+
+  // Type assertion is now safer after parsing
   return data as Project;
 }
 

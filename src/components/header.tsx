@@ -97,14 +97,17 @@ import {
              (item: { href?: string; title: string }) => // Add type for item
                item.href && (
                  <NavigationMenuItem key={item.href}>
-                   {/* Use NavigationMenuLink directly with href */}
-                   <NavigationMenuLink
-                     href={item.href} // Pass href directly
-                     className={navigationMenuTriggerStyle()}
-                     active={pathname === item.href} // Highlight active link
+                   {/* Replace NavigationMenuLink with simple Link + manual styling */}
+                   <Link
+                     href={item.href}
+                     className={cn(
+                       navigationMenuTriggerStyle(), // Apply base styles
+                       "transition-colors hover:text-primary", // Add hover effect
+                       pathname === item.href ? "text-primary font-medium" : "text-foreground/80" // Active/inactive styles
+                     )}
                    >
                      {item.title}
-                   </NavigationMenuLink>
+                   </Link>
                  </NavigationMenuItem>
                )
            )}

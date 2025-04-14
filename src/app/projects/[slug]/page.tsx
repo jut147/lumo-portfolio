@@ -153,10 +153,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
          </div> {/* --- End Right Column --- */}
        </div> 
        {/* --- Gallery Section (Below Grid) --- */}
-       {/* Restore gallery section */}
+       {/* --- Gallery Section (Below Grid) --- */}
        {bentoGalleryItems.length > 0 ? (
          <div className="my-16">
-           <h2 className="mb-8 ...">Visual Showcase</h2>
+           <h2 className="mb-8 text-xl md:text-2xl font-semibold text-center">Visual Showcase</h2>
            <InteractiveBentoGallery mediaItems={bentoGalleryItems} />
          </div>
        ) : null}
