@@ -17,5 +17,11 @@
         "Git Bash": {
             "source": "Git Bash"
         }
+    },
+    "terminal.integrated.automationProfile.osx": {
+        "path": "/bin/zsh",
+        "args": [
+            "-l"
+        ]
     }
 }

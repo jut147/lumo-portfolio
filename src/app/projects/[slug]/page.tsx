@@ -4,7 +4,7 @@ import { getProjectBySlug, getAllProjectSlugs } from "@/lib/data";
 import Image from 'next/image';
 import Link from 'next/link';
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button"; // Import Button for CTA
+import { buttonVariants } from "@/components/ui/button"; // Import buttonVariants for CTA Link styling
 import InteractiveBentoGallery from "@/components/ui/interactive-bento-gallery"; // Add import for Bento Gallery
 
 // Define props type expecting params as a Promise (for Next.js 15+)
@@ -30,12 +30,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const techStack = project.tech_stack ?? [];
 
   return (
-    <main className="pt-20 pb-16">
-       {/* Keep only the title for debugging */}
-       <h1 className="mb-4 text-3xl md:text-5xl font-bold text-center">
-         {project.title_client || project.title}
-       </h1>
-       {/* <p className="text-center text-muted-foreground">Debugging - Content Removed</p> */}
+    <main className="pt-20 pb-16 max-w-6xl mx-auto px-4"> {/* Add container classes */}
+       {/* Removed redundant top title */}
 
        {/* --- Restore Top Grid & Left Column --- */}
        
@@ -163,9 +159,15 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
        {/* --- Restore CTA Section --- */}
        <div className="text-center mt-16">
          <h2 className="text-xl md:text-2xl font-bold mb-6">Interested in a similar project?</h2>
-         <Button asChild size="lg">
-           <Link href="/contact">Get In Touch</Link>
-         </Button>
+         {/* <Button asChild size="lg"> */}
+           {/* Apply button styles directly to Link */}
+           <Link
+             href="/contact"
+             className={buttonVariants({ size: "lg" })} // Use buttonVariants
+           >
+             Get In Touch
+           </Link>
+         {/* </Button> */}
        </div>
        
      </main>
